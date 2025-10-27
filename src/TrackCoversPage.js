@@ -5,30 +5,18 @@ import './TrackCoversPage.css';
 function TrackCoversPage() {
   return (
     <div className="track-covers-page">
-      {/* Header */}
-      <header className="page-header">
-        <div className="header-content">
-          <Link to="/" className="logo-link">
-            <div className="logo">
-              <span className="logo-text">Trailer</span>
-              <span className="logo-text-bold">Safe</span>
-              <span className="logo-underline"></span>
-              <span className="logo-text-small">USA</span>
-            </div>
-          </Link>
-          
-          <nav className="header-nav">
-            <Link to="/#products" className="nav-link">Products</Link>
-            <Link to="/#about" className="nav-link">About Us</Link>
-            <Link to="/#faq" className="nav-link">FAQ</Link>
-          </nav>
-        </div>
-      </header>
-
       {/* Hero Section */}
       <section className="track-covers-hero">
         <div className="hero-content">
           <div className="hero-text">
+            <Link to="/" className="logo-link">
+              <div className="logo">
+                <span className="logo-text">Trailer</span>
+                <span className="logo-text-bold">Safe</span>
+                <span className="logo-underline"></span>
+                <span className="logo-text-small">USA</span>
+              </div>
+            </Link>
             <h1 className="hero-title">Track Covers</h1>
             <p className="hero-subtitle">Professional Protection for Your Equipment</p>
             <p className="hero-description">
