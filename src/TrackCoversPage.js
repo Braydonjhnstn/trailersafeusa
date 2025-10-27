@@ -10,12 +10,7 @@ function TrackCoversPage() {
         <div className="hero-content">
           <div className="hero-text">
             <Link to="/" className="logo-link">
-              <div className="logo">
-                <span className="logo-text">Trailer</span>
-                <span className="logo-text-bold">Safe</span>
-                <span className="logo-underline"></span>
-                <span className="logo-text-small">USA</span>
-              </div>
+              <img src="/trackcoverlogo.png" alt="Track Cover Logo" className="track-cover-logo" />
             </Link>
             <h1 className="hero-title">Track Covers</h1>
             <p className="hero-subtitle">Professional Protection for Your Equipment</p>

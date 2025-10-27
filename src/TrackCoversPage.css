@@ -10,43 +10,11 @@
   margin-bottom: 2rem;
 }
 
-.logo {
-  display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
-  position: relative;
-}
-
-.logo-text {
-  color: white;
-  font-size: 2rem;
-  font-weight: 400;
-  font-family: serif;
-}
-
-.logo-text-bold {
-  color: white;
-  font-size: 2rem;
-  font-weight: 700;
-  font-style: italic;
-  font-family: serif;
-  position: relative;
-}
-
-.logo-underline {
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: #dc3545;
-}
-
-.logo-text-small {
-  color: white;
-  font-size: 1.3rem;
-  font-weight: 400;
-  font-family: serif;
+.track-cover-logo {
+  height: 80px;
+  width: auto;
+  max-width: 300px;
+  object-fit: contain;
 }
 
 /* Hero Section */
@@ -342,13 +310,9 @@
     font-size: 2rem;
   }
   
-  .logo-text,
-  .logo-text-bold {
-    font-size: 1.5rem;
-  }
-  
-  .logo-text-small {
-    font-size: 1rem;
+  .track-cover-logo {
+    height: 60px;
+    max-width: 250px;
   }
 }
 
@@ -377,5 +341,10 @@
   .features-section,
   .product-details {
     padding: 3rem 1rem;
+  }
+  
+  .track-cover-logo {
+    height: 50px;
+    max-width: 200px;
   }
 }
