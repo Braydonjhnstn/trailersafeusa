@@ -12,8 +12,8 @@ function TrackCoversPage() {
             <Link to="/" className="logo-link">
               <img src="/trackcoverlogo.png" alt="Track Cover Logo" className="track-cover-logo" />
             </Link>
-            <h1 className="hero-title">Track Covers</h1>
-            <p className="hero-subtitle">Professional Protection for Your Equipment</p>
+            <h1 className="hero-title">Bigfoot Track Covers</h1>
+            <p className="hero-subtitle">Cover Your Tracks</p>
             <p className="hero-description">
               Our premium track covers provide superior protection against weather, debris, 
               and wear for all types of heavy machinery and construction equipment.
