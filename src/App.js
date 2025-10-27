@@ -1,7 +1,9 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
+import TrackCoversPage from './TrackCoversPage';
 
-function App() {
+function HomePage() {
   return (
     <div className="App">
       {/* Header */}
@@ -43,7 +45,7 @@ function App() {
             </div>
             <h3 className="product-header">Track Covers</h3>
             <p className="product-description">Protect your equipment tracks with our durable covers</p>
-            <button className="product-button">Learn More</button>
+            <a href="/track-covers" className="product-button">Learn More</a>
           </div>
           
           <div className="product-card">
@@ -98,6 +100,17 @@ function App() {
         </div>
       </section>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/track-covers" element={<TrackCoversPage />} />
+      </Routes>
+    </Router>
   );
 }
 
