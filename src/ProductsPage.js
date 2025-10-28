@@ -1,71 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './ProductsPage.css';
+import { shopifyRequest, SHOPIFY_QUERIES, transformProduct } from './shopifyConfig';
 
 function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Mock data for demonstration - replace with actual Shopify API calls
-  const mockProducts = [
-    {
-      id: 1,
-      title: "Heavy Duty Track Covers",
-      price: "$89.99",
-      compareAtPrice: "$119.99",
-      image: "/trackcover.png",
-      description: "Premium protection for your equipment tracks",
-      variants: [
-        { id: 1, title: "Small", price: "$79.99" },
-        { id: 2, title: "Medium", price: "$89.99" },
-        { id: 3, title: "Large", price: "$99.99" }
-      ],
-      tags: ["Heavy Duty", "Weather Resistant", "Durable"]
-    },
-    {
-      id: 2,
-      title: "Equipment Protection Kit",
-      price: "$149.99",
-      compareAtPrice: "$199.99",
-      image: "/excavator.jpg",
-      description: "Complete protection solution for heavy machinery",
-      variants: [
-        { id: 4, title: "Standard", price: "$149.99" },
-        { id: 5, title: "Premium", price: "$179.99" }
-      ],
-      tags: ["Complete Kit", "Multi-Purpose", "Professional"]
-    },
-    {
-      id: 3,
-      title: "Custom Track Covers",
-      price: "From $199.99",
-      compareAtPrice: null,
-      image: "/trackcover.png",
-      description: "Custom-sized covers for specific equipment",
-      variants: [
-        { id: 6, title: "Custom Size", price: "Contact for Quote" }
-      ],
-      tags: ["Custom", "Made to Order", "Professional"]
-    }
-  ];
 
   useEffect(() => {
-    // Simulate API call
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        // TODO: Replace with actual Shopify API call
-        // const response = await fetch('/api/shopify/products');
-        // const data = await response.json();
+        setError(null);
         
-        // Using mock data for now
-        setTimeout(() => {
-          setProducts(mockProducts);
-          setLoading(false);
-        }, 1000);
+        // Fetch products from Shopify Storefront API
+        const data = await shopifyRequest(SHOPIFY_QUERIES.getProducts, { first: 20 });
+        
+        if (data && data.products && data.products.edges) {
+          const transformedProducts = data.products.edges.map(edge => transformProduct(edge));
+          setProducts(transformedProducts);
+        } else {
+          setError('No products found');
+        }
+        
+        setLoading(false);
       } catch (err) {
-        setError('Failed to load products');
+        console.error('Error fetching products:', err);
+        setError(`Failed to load products: ${err.message}`);
         setLoading(false);
       }
     };
@@ -76,7 +39,7 @@ function ProductsPage() {
   const handleAddToCart = (productId, variantId) => {
     // TODO: Implement Shopify cart API integration
     console.log(`Adding product ${productId}, variant ${variantId} to cart`);
-    alert('Product added to cart! (Demo mode)');
+    alert('Product added to cart! (Shopify integration in progress)');
   };
 
   if (loading) {
@@ -188,13 +151,13 @@ function ProductsPage() {
       {/* Shopify Integration Notice */}
       <section className="integration-notice">
         <div className="notice-content">
-          <h3>Shopify Integration</h3>
-          <p>This page is set up to integrate with Shopify's Storefront API. To enable full functionality:</p>
+          <h3>Shopify Integration Active</h3>
+          <p>This page is now connected to your Shopify store and displaying real products. Next steps:</p>
           <ul>
-            <li>Configure your Shopify store credentials</li>
-            <li>Set up the Storefront API access token</li>
-            <li>Replace mock data with actual API calls</li>
-            <li>Implement cart and checkout functionality</li>
+            <li>✅ Connected to Shopify Storefront API</li>
+            <li>✅ Displaying real products from your store</li>
+            <li>⏳ Implement cart and checkout functionality</li>
+            <li>⏳ Add product search and filtering</li>
           </ul>
         </div>
       </section>
