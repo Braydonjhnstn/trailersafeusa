@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './ProductsPage.css';
-// import { shopifyRequest, SHOPIFY_QUERIES, transformProduct } from './shopifyConfig';
+import { shopifyRequest, SHOPIFY_QUERIES, transformProduct } from './shopifyConfig';
 
 function ProductsPage() {
   const [products, setProducts] = useState([]);
@@ -58,21 +58,24 @@ function ProductsPage() {
         setLoading(true);
         setError(null);
         
-        // Temporarily use fallback data to fix the blank page issue
-        console.log('Using fallback products for now');
-        setProducts(getFallbackProducts());
-        setLoading(false);
+        console.log('Attempting to fetch products from Shopify...');
         
-        // TODO: Re-enable Shopify API once we confirm the page loads
-        // const data = await shopifyRequest(SHOPIFY_QUERIES.getProducts, { first: 20 });
-        // if (data && data.products && data.products.edges) {
-        //   const transformedProducts = data.products.edges.map(edge => transformProduct(edge));
-        //   setProducts(transformedProducts);
-        // } else {
-        //   setProducts(getFallbackProducts());
-        // }
+        // Try to fetch products from Shopify Storefront API
+        const data = await shopifyRequest(SHOPIFY_QUERIES.getProducts, { first: 20 });
+        
+        if (data && data.products && data.products.edges && data.products.edges.length > 0) {
+          console.log('Successfully fetched products from Shopify:', data.products.edges.length);
+          const transformedProducts = data.products.edges.map(edge => transformProduct(edge));
+          setProducts(transformedProducts);
+        } else {
+          console.log('No products found in Shopify, using fallback data');
+          setProducts(getFallbackProducts());
+        }
+        
+        setLoading(false);
       } catch (err) {
-        console.error('Error fetching products:', err);
+        console.error('Error fetching products from Shopify:', err);
+        console.log('Using fallback products due to API error');
         setProducts(getFallbackProducts());
         setLoading(false);
       }
@@ -197,10 +200,11 @@ function ProductsPage() {
       <section className="integration-notice">
         <div className="notice-content">
           <h3>Shopify Integration Active</h3>
-          <p>This page is now connected to your Shopify store and displaying real products. Next steps:</p>
+          <p>This page is now connected to your Shopify store and will display real products if available. Features:</p>
           <ul>
             <li>✅ Connected to Shopify Storefront API</li>
-            <li>✅ Displaying real products from your store</li>
+            <li>✅ Attempting to fetch real products from your store</li>
+            <li>✅ Fallback to demo products if no products found</li>
             <li>⏳ Implement cart and checkout functionality</li>
             <li>⏳ Add product search and filtering</li>
           </ul>

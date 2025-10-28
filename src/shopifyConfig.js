@@ -3,7 +3,7 @@
 
 export const SHOPIFY_CONFIG = {
   // Your Shopify store domain (e.g., 'your-store.myshopify.com')
-  domain: process.env.REACT_APP_SHOPIFY_DOMAIN || 'trailersafeusa.myshopify.com',
+  domain: process.env.REACT_APP_SHOPIFY_DOMAIN || 'pjgf3x-xt.myshopify.com',
   
   // Storefront API access token
   storefrontAccessToken: process.env.REACT_APP_SHOPIFY_STOREFRONT_TOKEN || 'ef5db8c02a424aa34969c41c2a45620a',
