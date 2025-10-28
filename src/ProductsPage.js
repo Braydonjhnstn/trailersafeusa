@@ -39,7 +39,7 @@ function ProductsPage() {
   const handleAddToCart = (productId, variantId) => {
     // TODO: Implement Shopify cart API integration
     console.log(`Adding product ${productId}, variant ${variantId} to cart`);
-    alert('Product added to cart! (Shopify integration in progress)');
+    alert('Product added to cart! (Demo mode)');
   };
 
   if (loading) {
