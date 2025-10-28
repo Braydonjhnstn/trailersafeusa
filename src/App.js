@@ -2,8 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import TrackCoversPage from './TrackCoversPage';
-import ProductsPage from './pages/ProductsPage';
-import ProductDetail from './components/ProductDetail';
+// import ProductsPage from './pages/ProductsPage';
+// import ProductDetail from './components/ProductDetail';
 
 function HomePage() {
   return (
@@ -25,7 +25,7 @@ function HomePage() {
           </div>
           
           <nav className="header-nav">
-            <a href="/products" className="nav-link">Products</a>
+            <a href="#products" className="nav-link">Products</a>
             <a href="#about" className="nav-link">About Us</a>
             <a href="#faq" className="nav-link">FAQ</a>
           </nav>
@@ -111,8 +111,8 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/track-covers" element={<TrackCoversPage />} />
-              <Route path="/products" element={<ProductsPage />} />
-              <Route path="/products/:handle" element={<ProductDetail />} />
+              {/* <Route path="/products" element={<ProductsPage />} />
+              <Route path="/products/:handle" element={<ProductDetail />} /> */}
             </Routes>
     </Router>
   );

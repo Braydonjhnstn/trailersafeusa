@@ -15,11 +15,6 @@ export const useProducts = (initialLimit = 20) => {
 
   // Fetch products
   const fetchProducts = useCallback(async (first = initialLimit, after = null) => {
-    if (!shopifyService.isConfigured()) {
-      setError('Shopify is not properly configured. Please check your environment variables.');
-      return;
-    }
-
     setLoading(true);
     setError(null);
 
@@ -27,6 +22,10 @@ export const useProducts = (initialLimit = 20) => {
       const data = await shopifyService.getProducts(first, after);
       setProducts(data.products);
       setPageInfo(data.pageInfo);
+      
+      if (!shopifyService.isConfigured()) {
+        setError('Shopify is not properly configured. Please check your environment variables.');
+      }
     } catch (err) {
       setError(err.message);
       console.error('Failed to fetch products:', err);

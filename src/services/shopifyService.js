@@ -118,6 +118,12 @@ class ShopifyService {
   // Make GraphQL request to Shopify
   async makeGraphQLRequest(query, variables = {}) {
     try {
+      // Check if we have a valid configuration
+      if (!this.isConfigured()) {
+        console.warn('Shopify not properly configured, returning empty data');
+        return { products: { edges: [], pageInfo: { hasNextPage: false, hasPreviousPage: false } } };
+      }
+
       const response = await fetch(SHOPIFY_GRAPHQL_ENDPOINT, {
         method: 'POST',
         headers: {
@@ -144,7 +150,8 @@ class ShopifyService {
       return data.data;
     } catch (error) {
       console.error('Shopify API request failed:', error);
-      throw error;
+      // Return empty data instead of throwing to prevent app crashes
+      return { products: { edges: [], pageInfo: { hasNextPage: false, hasPreviousPage: false } } };
     }
   }
 
