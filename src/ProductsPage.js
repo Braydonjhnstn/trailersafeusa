@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './ProductsPage.css';
-import { shopifyRequest, SHOPIFY_QUERIES, transformProduct } from './shopifyConfig';
+// import { shopifyRequest, SHOPIFY_QUERIES, transformProduct } from './shopifyConfig';
 
 function ProductsPage() {
   const [products, setProducts] = useState([]);
