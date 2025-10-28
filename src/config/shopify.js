@@ -7,7 +7,7 @@ export const SHOPIFY_CONFIG = {
   
   // Your Shopify Storefront API access token
   // Get this from your Shopify admin under Apps > App and sales channel settings > Develop apps
-  storefrontAccessToken: process.env.REACT_APP_SHOPIFY_STOREFRONT_ACCESS_TOKEN || 'your-storefront-access-token',
+  storefrontAccessToken: process.env.REACT_APP_SHOPIFY_STOREFRONT_ACCESS_TOKEN || 'ef5db8c02a424aa34969c41c2a45620a',
   
   // API version
   apiVersion: '2023-10',

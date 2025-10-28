@@ -1,10 +1,9 @@
 // Shopify API Service
 // This service handles communication with Shopify's Storefront API
 
-const SHOPIFY_STORE_DOMAIN = process.env.REACT_APP_SHOPIFY_STORE_DOMAIN || 'your-store.myshopify.com';
-const SHOPIFY_STOREFRONT_ACCESS_TOKEN = process.env.REACT_APP_SHOPIFY_STOREFRONT_ACCESS_TOKEN || 'your-storefront-access-token';
+import { SHOPIFY_CONFIG } from '../config/shopify';
 
-const SHOPIFY_GRAPHQL_ENDPOINT = `https://${SHOPIFY_STORE_DOMAIN}/api/2023-10/graphql.json`;
+const SHOPIFY_GRAPHQL_ENDPOINT = SHOPIFY_CONFIG.graphqlEndpoint;
 
 // GraphQL query to fetch products
 const GET_PRODUCTS_QUERY = `
@@ -112,8 +111,8 @@ const GET_PRODUCT_BY_HANDLE_QUERY = `
 
 class ShopifyService {
   constructor() {
-    this.storeDomain = SHOPIFY_STORE_DOMAIN;
-    this.accessToken = SHOPIFY_STOREFRONT_ACCESS_TOKEN;
+    this.storeDomain = SHOPIFY_CONFIG.storeDomain;
+    this.accessToken = SHOPIFY_CONFIG.storefrontAccessToken;
   }
 
   // Make GraphQL request to Shopify
@@ -243,7 +242,8 @@ class ShopifyService {
   // Check if service is properly configured
   isConfigured() {
     return this.storeDomain !== 'your-store.myshopify.com' && 
-           this.accessToken !== 'your-storefront-access-token';
+           this.accessToken !== 'your-storefront-access-token' &&
+           this.accessToken.length > 10;
   }
 }
 
