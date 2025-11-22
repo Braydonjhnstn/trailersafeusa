@@ -1,12 +1,20 @@
 // Shopify API Configuration
 // Replace these with your actual Shopify store credentials
 
+// Safely access process.env (not available in browser without webpack config)
+const getEnvVar = (key, fallback) => {
+  if (typeof process !== 'undefined' && process.env && process.env[key]) {
+    return process.env[key];
+  }
+  return fallback;
+};
+
 export const SHOPIFY_CONFIG = {
-  // Your Shopify store domain (e.g., 'your-store.myshopify.com')
-  domain: process.env.REACT_APP_SHOPIFY_DOMAIN || 'pjgf3x-xt.myshopify.com',
+  // Your Shopify store domain
+  domain: getEnvVar('REACT_APP_SHOPIFY_DOMAIN', 'pjgf3x-xt.myshopify.com'),
   
   // Storefront API access token
-  storefrontAccessToken: process.env.REACT_APP_SHOPIFY_STOREFRONT_TOKEN || 'ef5db8c02a424aa34969c41c2a45620a',
+  storefrontAccessToken: getEnvVar('REACT_APP_SHOPIFY_STOREFRONT_TOKEN', 'ef5db8c02a424aa34969c41c2a45620a'),
   
   // API version
   apiVersion: '2023-10',
@@ -187,7 +195,21 @@ export const SHOPIFY_QUERIES = {
 // Helper function to make GraphQL requests to Shopify
 export const shopifyRequest = async (query, variables = {}) => {
   try {
-    const response = await fetch(SHOPIFY_CONFIG.endpoint, {
+    // Validate configuration before making request
+    if (!SHOPIFY_CONFIG.domain || !SHOPIFY_CONFIG.storefrontAccessToken) {
+      throw new Error('Shopify configuration is incomplete. Missing domain or access token.');
+    }
+
+    if (!query) {
+      throw new Error('GraphQL query is required');
+    }
+
+    const endpoint = SHOPIFY_CONFIG.endpoint;
+    if (!endpoint || !endpoint.startsWith('https://')) {
+      throw new Error(`Invalid endpoint URL: ${endpoint}`);
+    }
+
+    const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -200,13 +222,18 @@ export const shopifyRequest = async (query, variables = {}) => {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorText = await response.text();
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
     }
 
     const data = await response.json();
     
     if (data.errors) {
       throw new Error(`GraphQL errors: ${JSON.stringify(data.errors)}`);
+    }
+
+    if (!data || !data.data) {
+      throw new Error('Invalid response format from Shopify API');
     }
 
     return data.data;

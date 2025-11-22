@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './ProductsPage.css';
-// import { shopifyRequest, SHOPIFY_QUERIES, transformProduct } from './shopifyConfig';
+import { shopifyRequest, SHOPIFY_QUERIES, transformProduct, SHOPIFY_CONFIG } from './shopifyConfig';
 
 function ProductsPage() {
+  console.log('ProductsPage component rendering');
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -58,21 +59,69 @@ function ProductsPage() {
         setLoading(true);
         setError(null);
         
-        // Temporarily use fallback data to fix the blank page issue
-        console.log('Using fallback products for now');
-        setProducts(getFallbackProducts());
-        setLoading(false);
+        // Step 1: Validate Shopify configuration
+        if (!SHOPIFY_CONFIG || !SHOPIFY_CONFIG.domain || !SHOPIFY_CONFIG.storefrontAccessToken) {
+          console.warn('Shopify configuration is missing, using fallback data');
+          setProducts(getFallbackProducts());
+          setLoading(false);
+          return;
+        }
+
+        // Step 2: Validate required functions exist
+        if (!shopifyRequest || !SHOPIFY_QUERIES || !SHOPIFY_QUERIES.getProducts) {
+          console.warn('Shopify functions not available, using fallback data');
+          setProducts(getFallbackProducts());
+          setLoading(false);
+          return;
+        }
+
+        // Step 3: Attempt to fetch from Shopify API with timeout
+        console.log('Attempting to fetch products from Shopify...');
         
-        // TODO: Re-enable Shopify API once we confirm the page loads
-        // const data = await shopifyRequest(SHOPIFY_QUERIES.getProducts, { first: 20 });
-        // if (data && data.products && data.products.edges) {
-        //   const transformedProducts = data.products.edges.map(edge => transformProduct(edge));
-        //   setProducts(transformedProducts);
-        // } else {
-        //   setProducts(getFallbackProducts());
-        // }
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Request timeout')), 10000)
+        );
+        
+        const apiPromise = shopifyRequest(SHOPIFY_QUERIES.getProducts, { first: 20 });
+        
+        const data = await Promise.race([apiPromise, timeoutPromise]);
+        
+        // Step 4: Validate and transform the response
+        if (data && data.products && data.products.edges && Array.isArray(data.products.edges) && data.products.edges.length > 0) {
+          console.log(`Successfully fetched ${data.products.edges.length} products from Shopify`);
+          
+          const transformedProducts = data.products.edges
+            .map(edge => {
+              try {
+                if (!edge || !edge.node) {
+                  console.warn('Invalid product edge structure:', edge);
+                  return null;
+                }
+                return transformProduct(edge);
+              } catch (transformErr) {
+                console.error('Error transforming product:', transformErr, edge);
+                return null;
+              }
+            })
+            .filter(product => product !== null && product !== undefined); // Remove any null/undefined values
+          
+          if (transformedProducts.length > 0) {
+            console.log(`Successfully transformed ${transformedProducts.length} products`);
+            setProducts(transformedProducts);
+          } else {
+            console.warn('No valid products after transformation, using fallback data');
+            setProducts(getFallbackProducts());
+          }
+        } else {
+          console.warn('No products found in Shopify response, using fallback data');
+          setProducts(getFallbackProducts());
+        }
+        
+        setLoading(false);
       } catch (err) {
-        console.error('Error fetching products:', err);
+        // Always fallback to mock data on any error
+        console.error('Error fetching products from Shopify:', err);
+        console.log('Falling back to mock product data');
         setProducts(getFallbackProducts());
         setLoading(false);
       }
