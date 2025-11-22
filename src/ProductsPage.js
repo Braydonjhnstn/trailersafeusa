@@ -8,6 +8,8 @@ function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [quantity, setQuantity] = useState(1);
 
   // Fallback products in case Shopify API fails
   const getFallbackProducts = () => [
@@ -130,10 +132,35 @@ function ProductsPage() {
     fetchProducts();
   }, []);
 
-  const handleAddToCart = (productId, variantId) => {
+  const handleProductClick = (product) => {
+    setSelectedProduct(product);
+    setQuantity(1);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedProduct(null);
+    setQuantity(1);
+  };
+
+  const handleQuantityChange = (e) => {
+    const newQuantity = parseInt(e.target.value) || 1;
+    setQuantity(Math.max(1, newQuantity));
+  };
+
+  const handleAddToCart = () => {
+    if (!selectedProduct) return;
     // TODO: Implement Shopify cart API integration
-    console.log(`Adding product ${productId}, variant ${variantId} to cart`);
-    alert('Product added to cart! (Demo mode)');
+    console.log(`Adding ${quantity} of product ${selectedProduct.id} to cart`);
+    alert(`Added ${quantity} ${selectedProduct.title} to cart! (Demo mode)`);
+    handleCloseModal();
+  };
+
+  const handleBuyNow = () => {
+    if (!selectedProduct) return;
+    // TODO: Implement Shopify checkout API integration
+    console.log(`Buying ${quantity} of product ${selectedProduct.id} now`);
+    alert(`Redirecting to checkout for ${quantity} ${selectedProduct.title}... (Demo mode)`);
+    handleCloseModal();
   };
 
   if (loading) {
@@ -162,9 +189,15 @@ function ProductsPage() {
   return (
     <div className="products-page">
       {/* Header */}
-      <header className="products-header">
+      <header className="header">
         <div className="header-content">
-          <Link to="/" className="logo-link">
+          <div className="hamburger">
+            <div className="hamburger-line"></div>
+            <div className="hamburger-line"></div>
+            <div className="hamburger-line"></div>
+          </div>
+          
+          <Link to="/" style={{ textDecoration: 'none' }}>
             <div className="logo">
               <span className="logo-text">Trailer</span>
               <span className="logo-text-bold">Safe</span>
@@ -174,86 +207,114 @@ function ProductsPage() {
           </Link>
           
           <nav className="header-nav">
-            <Link to="/#products" className="nav-link">Products</Link>
-            <Link to="/#about" className="nav-link">About Us</Link>
-            <Link to="/#faq" className="nav-link">FAQ</Link>
+            <a href="/products" className="nav-link">Products</a>
+            <a href="#about" className="nav-link">About Us</a>
+            <a href="#faq" className="nav-link">FAQ</a>
           </nav>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="products-hero">
-        <div className="hero-content">
-          <h1 className="hero-title">Products</h1>
+      {/* Main Content Container */}
+      <div className="products-main-container">
+        {/* Title Section */}
+        <div className="products-title-section">
+          <h1 className="products-main-title">Products</h1>
+          <div className="products-title-line"></div>
         </div>
-      </section>
 
-      {/* Products Grid */}
-      <section className="products-section">
-        <div className="products-container">
+        {/* Filter and Sort Bar */}
+        <div className="products-filter-bar">
+          <div className="filter-group">
+            <span className="filter-label">Filter:</span>
+            <select className="filter-select">
+              <option>Availability</option>
+              <option>In Stock</option>
+              <option>Out of Stock</option>
+            </select>
+            <select className="filter-select">
+              <option>Price</option>
+              <option>Low to High</option>
+              <option>High to Low</option>
+            </select>
+          </div>
+          <div className="sort-group">
+            <span className="sort-label">Sort by:</span>
+            <select className="sort-select">
+              <option>Alphabetically, A-Z</option>
+              <option>Alphabetically, Z-A</option>
+              <option>Price: Low to High</option>
+              <option>Price: High to Low</option>
+            </select>
+            <span className="product-count">{products.length} products</span>
+          </div>
+        </div>
+
+        {/* Products Grid */}
+        <div className="products-grid-container">
           <div className="products-grid">
             {products.map((product) => (
-              <div key={product.id} className="product-card">
-                <div className="product-image">
-                  <img src={product.image} alt={product.title} />
-                  {product.compareAtPrice && (
-                    <div className="sale-badge">Sale</div>
-                  )}
+              <div 
+                key={product.id} 
+                className="product-card"
+                onClick={() => handleProductClick(product)}
+              >
+                <div className="product-image-wrapper">
+                  <img src={product.image} alt={product.title} className="product-image" />
                 </div>
-                
-                <div className="product-info">
-                  <h3 className="product-title">{product.title}</h3>
-                  <p className="product-description">{product.description}</p>
-                  
-                  <div className="product-tags">
-                    {product.tags.map((tag, index) => (
-                      <span key={index} className="product-tag">{tag}</span>
-                    ))}
-                  </div>
-                  
-                  <div className="product-pricing">
-                    <span className="product-price">{product.price}</span>
-                    {product.compareAtPrice && (
-                      <span className="product-compare-price">{product.compareAtPrice}</span>
-                    )}
-                  </div>
-                  
-                  <div className="product-variants">
-                    <select className="variant-select">
-                      {product.variants.map((variant) => (
-                        <option key={variant.id} value={variant.id}>
-                          {variant.title} - {variant.price}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  
-                  <button 
-                    className="add-to-cart-btn"
-                    onClick={() => handleAddToCart(product.id, product.variants[0].id)}
-                  >
-                    Add to Cart
-                  </button>
+                <div className="product-details">
+                  <h3 className="product-name">{product.title}</h3>
+                  <p className="product-price">{product.price.includes('USD') ? product.price : `${product.price} USD`}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Shopify Integration Notice */}
-      <section className="integration-notice">
-        <div className="notice-content">
-          <h3>Shopify Integration Active</h3>
-          <p>This page is now connected to your Shopify store and displaying real products. Next steps:</p>
-          <ul>
-            <li>✅ Connected to Shopify Storefront API</li>
-            <li>✅ Displaying real products from your store</li>
-            <li>⏳ Implement cart and checkout functionality</li>
-            <li>⏳ Add product search and filtering</li>
-          </ul>
+      {/* Product Modal */}
+      {selectedProduct && (
+        <div className="product-modal-overlay" onClick={handleCloseModal}>
+          <div className="product-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={handleCloseModal}>×</button>
+            
+            <div className="modal-content">
+              <div className="modal-image">
+                <img src={selectedProduct.image} alt={selectedProduct.title} />
+              </div>
+              
+              <div className="modal-details">
+                <h2 className="modal-title">{selectedProduct.title}</h2>
+                <p className="modal-price">{selectedProduct.price.includes('USD') ? selectedProduct.price : `${selectedProduct.price} USD`}</p>
+                
+                {selectedProduct.description && (
+                  <p className="modal-description">{selectedProduct.description}</p>
+                )}
+                
+                <div className="modal-quantity">
+                  <label htmlFor="quantity">Quantity:</label>
+                  <input
+                    type="number"
+                    id="quantity"
+                    min="1"
+                    value={quantity}
+                    onChange={handleQuantityChange}
+                    className="quantity-input"
+                  />
+                </div>
+                
+                <div className="modal-actions">
+                  <button className="btn-add-to-cart" onClick={handleAddToCart}>
+                    Add to Cart
+                  </button>
+                  <button className="btn-buy-now" onClick={handleBuyNow}>
+                    Buy it Now
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </section>
+      )}
     </div>
   );
 }
