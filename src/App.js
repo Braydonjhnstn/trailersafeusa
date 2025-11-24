@@ -12,6 +12,25 @@ function HomePage() {
   const { getCartItemCount } = useCart();
   const cartItemCount = getCartItemCount();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      const isMobileDevice = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      setIsMobile(isMobileDevice);
+    };
+    
+    // Check on mount
+    checkMobile();
+    
+    // Check on resize
+    window.addEventListener('resize', checkMobile);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
+  }, []);
   
   // Add class to body to prevent scrolling on home page
   useEffect(() => {
@@ -80,7 +99,7 @@ function HomePage() {
       {/* Hero Image Section */}
       <section className="hero-section">
         <img src="/excavator.jpg" alt="Orange Kubota mini-excavator in field" className="hero-image" />
-        <div className="hero-overlay">
+        <div className={`hero-overlay ${isMobile ? 'hero-overlay-mobile' : ''}`}>
           <h1 className="hero-title">Cover Your Tracks</h1>
           <a href="/products" className="hero-shop-button">SHOP NOW</a>
         </div>

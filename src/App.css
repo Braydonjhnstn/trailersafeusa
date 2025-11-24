@@ -338,6 +338,11 @@ body.home-page {
   z-index: 5;
 }
 
+/* Move hero overlay up by 25% on mobile */
+.hero-overlay-mobile {
+  bottom: 25%;
+}
+
 .hero-title {
   color: white;
   font-size: 4.5rem;
