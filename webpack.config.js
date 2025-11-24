@@ -4,8 +4,10 @@ const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-// Load .env file manually to ensure it's available for DefinePlugin
-require('dotenv').config();
+// Load .env file manually only in development (Vercel/Netlify inject env vars in production)
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 module.exports = {
   entry: './src/index.js',
@@ -46,12 +48,14 @@ module.exports = {
     ],
   },
   plugins: [
-    // Dotenv plugin must come first to load .env file
-    new Dotenv({
-      systemvars: true, // Load system environment variables as well
-      safe: false, // Allow empty variables
-      defaults: false, // Don't use .env.example as fallback
-    }),
+    // Dotenv plugin - only load .env file in development (production uses injected env vars)
+    ...(process.env.NODE_ENV !== 'production' ? [
+      new Dotenv({
+        systemvars: true, // Load system environment variables as well
+        safe: false, // Allow empty variables
+        defaults: false, // Don't use .env.example as fallback
+      })
+    ] : []),
     // DefinePlugin reads from process.env after Dotenv loads it
     new webpack.DefinePlugin({
       'process.env.REACT_APP_SHOPIFY_DOMAIN': JSON.stringify(process.env.REACT_APP_SHOPIFY_DOMAIN || ''),
