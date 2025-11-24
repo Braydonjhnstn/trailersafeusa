@@ -1,20 +1,15 @@
 // Shopify API Configuration
 // Replace these with your actual Shopify store credentials
 
-// Safely access process.env (not available in browser without webpack config)
-const getEnvVar = (key, fallback) => {
-  if (typeof process !== 'undefined' && process.env && process.env[key]) {
-    return process.env[key];
-  }
-  return fallback;
-};
-
+// Access environment variables directly (webpack DefinePlugin will replace these at build time)
 export const SHOPIFY_CONFIG = {
   // Your Shopify store domain
-  domain: getEnvVar('REACT_APP_SHOPIFY_DOMAIN', 'pjgf3x-xt.myshopify.com'),
+  // Webpack DefinePlugin will replace process.env.REACT_APP_SHOPIFY_DOMAIN at build time
+  domain: process.env.REACT_APP_SHOPIFY_DOMAIN || '',
   
   // Storefront API access token
-  storefrontAccessToken: getEnvVar('REACT_APP_SHOPIFY_STOREFRONT_TOKEN', 'ef5db8c02a424aa34969c41c2a45620a'),
+  // Webpack DefinePlugin will replace process.env.REACT_APP_SHOPIFY_STOREFRONT_TOKEN at build time
+  storefrontAccessToken: process.env.REACT_APP_SHOPIFY_STOREFRONT_TOKEN || '',
   
   // API version
   apiVersion: '2023-10',
@@ -208,6 +203,7 @@ export const shopifyRequest = async (query, variables = {}) => {
     }
 
     const endpoint = SHOPIFY_CONFIG.endpoint;
+    
     if (!endpoint || !endpoint.startsWith('https://')) {
       throw new Error(`Invalid endpoint URL: ${endpoint}`);
     }
@@ -226,12 +222,14 @@ export const shopifyRequest = async (query, variables = {}) => {
 
     if (!response.ok) {
       const errorText = await response.text();
+      console.error('Shopify API Error:', response.status, errorText);
       throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
     }
 
     const data = await response.json();
     
     if (data.errors) {
+      console.error('Shopify GraphQL Errors:', data.errors);
       throw new Error(`GraphQL errors: ${JSON.stringify(data.errors)}`);
     }
 

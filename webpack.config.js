@@ -1,5 +1,10 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
+const webpack = require('webpack');
+
+// Load .env file manually to ensure it's available for DefinePlugin
+require('dotenv').config();
 
 module.exports = {
   entry: './src/index.js',
@@ -39,6 +44,17 @@ module.exports = {
     ],
   },
   plugins: [
+    // Dotenv plugin must come first to load .env file
+    new Dotenv({
+      systemvars: true, // Load system environment variables as well
+      safe: false, // Allow empty variables
+      defaults: false, // Don't use .env.example as fallback
+    }),
+    // DefinePlugin reads from process.env after Dotenv loads it
+    new webpack.DefinePlugin({
+      'process.env.REACT_APP_SHOPIFY_DOMAIN': JSON.stringify(process.env.REACT_APP_SHOPIFY_DOMAIN || ''),
+      'process.env.REACT_APP_SHOPIFY_STOREFRONT_TOKEN': JSON.stringify(process.env.REACT_APP_SHOPIFY_STOREFRONT_TOKEN || ''),
+    }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
