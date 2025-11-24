@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // Load .env file manually to ensure it's available for DefinePlugin
 require('dotenv').config();
@@ -11,6 +12,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
+    publicPath: '/', // Critical for production - ensures assets load correctly
     clean: true,
   },
   module: {
@@ -54,6 +56,12 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.REACT_APP_SHOPIFY_DOMAIN': JSON.stringify(process.env.REACT_APP_SHOPIFY_DOMAIN || ''),
       'process.env.REACT_APP_SHOPIFY_STOREFRONT_TOKEN': JSON.stringify(process.env.REACT_APP_SHOPIFY_STOREFRONT_TOKEN || ''),
+    }),
+    // Copy public assets (images, etc.) to dist folder
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'public', to: '', globOptions: { ignore: ['**/index.html'] } }
+      ]
     }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
