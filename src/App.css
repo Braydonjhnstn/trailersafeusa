@@ -12,9 +12,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: #ffffff;
   min-height: 100vh;
-  /* COMMENTED OUT TO PREVENT SCROLLING - min-height: 100vh; */
-  overflow: hidden; /* Prevent scrolling on home page */
-  height: 100vh; /* Fixed height to prevent scrolling */
+}
+
+/* Prevent scrolling only on home page - body will be overridden by ProductsPage */
+body.home-page {
+  overflow: hidden;
+  height: 100vh;
 }
 
 .App {
@@ -28,7 +31,7 @@ body {
 /* Header Styles */
 .header {
   background: #1a1a2e;
-  padding: 0; /* No padding to make nav bar as short as possible */
+  padding: 0.1rem 0; /* Small padding to match ProductsPage spacing */
   position: relative;
   z-index: 10;
 }
@@ -47,11 +50,26 @@ body {
 }
 
 /* Ensure logo image has no box styling from parent containers */
-.header-content .logo-image {
+.header-content .logo-image,
+.header-content a .logo-image {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
   outline: none !important;
+}
+
+/* Remove any box styling from Link wrapper around logo - only target logo links */
+.header-content a[href="/"] .logo-image,
+.header-content a[href="/"],
+.header-content a .logo-image {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  text-decoration: none !important;
+  display: inline-block;
 }
 
 .hamburger {
@@ -72,6 +90,143 @@ body {
   border-radius: 2px;
 }
 
+/* Sidebar Overlay */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1999;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Sidebar Menu */
+.dropdown-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 280px;
+  background: #1a1a2e;
+  z-index: 2000;
+  padding: 6rem 0 2rem 0;
+  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.3);
+  animation: slideInLeft 0.3s ease-out;
+  overflow-y: auto;
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.sidebar-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  font-weight: 300;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.sidebar-close:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: scale(1.1);
+}
+
+.dropdown-item {
+  display: block;
+  padding: 1.25rem 2rem;
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: sans-serif;
+}
+
+.dropdown-item:first-child {
+  margin-top: 0;
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  padding-left: 2.5rem;
+}
+
+.cart-icon-link {
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.cart-icon svg {
+  width: 25px;
+  height: 25px;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #dc3545;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 2px solid #1a1a2e;
+}
+
 .logo {
   display: flex;
   align-items: center;
@@ -80,14 +235,14 @@ body {
 }
 
 .logo-image {
-  height: 120px; /* Reduced size to make nav bar shorter */
+  height: 60px; /* Match ProductsPage exactly */
   width: auto;
   object-fit: contain;
   display: block;
   background: transparent !important;
   border: none !important;
   padding: 0 !important;
-  margin: 0 !important;
+  margin: .1rem !important; /* Same gap on all sides including top and bottom */
   box-shadow: none !important;
   outline: none !important;
 }
@@ -397,10 +552,10 @@ body {
   font-family: sans-serif;
 }
 
-/* Smooth scrolling - COMMENTED OUT TO PREVENT SCROLLING */
-/* html {
+ /* Smooth scrolling - COMMENTED OUT TO PREVENT SCROLLING */
+ html {
   scroll-behavior: smooth;
-} */
+} 
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -500,3 +655,4 @@ body {
     padding: 3rem 1rem;
   }
 }
+

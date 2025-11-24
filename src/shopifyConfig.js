@@ -151,19 +151,22 @@ export const SHOPIFY_QUERIES = {
     }
   `,
   
-  // Create checkout
-  createCheckout: `
-    mutation checkoutCreate($input: CheckoutCreateInput!) {
-      checkoutCreate(input: $input) {
-        checkout {
+  // Create cart (replaces deprecated checkoutCreate)
+  createCart: `
+    mutation cartCreate($input: CartInput!) {
+      cartCreate(input: $input) {
+        cart {
           id
-          webUrl
-          totalPrice {
-            amount
-            currencyCode
+          checkoutUrl
+          totalQuantity
+          cost {
+            totalAmount {
+              amount
+              currencyCode
+            }
           }
         }
-        checkoutUserErrors {
+        userErrors {
           field
           message
         }
@@ -278,6 +281,58 @@ export const transformProduct = (shopifyProduct) => {
       availableForSale: variant.availableForSale
     })),
     tags: product.tags || [],
-    options: product.options || []
+    options: product.options || [],
+    // Store the first variant ID for checkout purposes
+    defaultVariantId: variants[0]?.id || null
   };
+};
+
+// Helper function to create Shopify cart/checkout
+export const createShopifyCheckout = async (cartItems) => {
+  try {
+    // Convert cart items to Shopify line items format
+    const lines = cartItems.map(item => {
+      // Use variantId if available, otherwise try to extract from product ID
+      // If the item has a defaultVariantId, use it; otherwise use the product ID as variant ID
+      let variantId = item.variantId || item.defaultVariantId;
+      
+      // If we still don't have a variant ID, try to use the product ID
+      // (Shopify product IDs can sometimes be used, but variant IDs are preferred)
+      if (!variantId && item.id) {
+        // If the ID looks like a product ID, we need to get the first variant
+        // For now, we'll use the product ID and let Shopify handle it
+        variantId = item.id;
+      }
+      
+      if (!variantId) {
+        throw new Error(`No variant ID found for product: ${item.title}`);
+      }
+      
+      return {
+        merchandiseId: variantId,
+        quantity: item.quantity
+      };
+    });
+
+    // Create cart with line items
+    const input = {
+      lines: lines
+    };
+
+    const data = await shopifyRequest(SHOPIFY_QUERIES.createCart, { input });
+
+    if (data.cartCreate.userErrors && data.cartCreate.userErrors.length > 0) {
+      const errors = data.cartCreate.userErrors.map(err => err.message).join(', ');
+      throw new Error(`Cart creation errors: ${errors}`);
+    }
+
+    if (!data.cartCreate.cart || !data.cartCreate.cart.checkoutUrl) {
+      throw new Error('Failed to create cart - no checkout URL returned');
+    }
+
+    return data.cartCreate.cart.checkoutUrl;
+  } catch (error) {
+    console.error('Error creating Shopify cart:', error);
+    throw error;
+  }
 };
