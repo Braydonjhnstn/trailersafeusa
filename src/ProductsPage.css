@@ -8,7 +8,7 @@
 /* Header Styles - Match Home Page */
 .header {
   background: #1a1a2e;
-  padding: 1rem 0;
+  padding: 0; /* No padding to make nav bar as short as possible */
   position: relative;
   z-index: 10;
 }
@@ -21,6 +21,18 @@
   margin: 0 auto;
   padding: 0 2rem;
   position: relative;
+  background: transparent;
+  min-height: auto; /* Remove any minimum height constraint */
+  height: auto; /* Let height be determined by content only */
+}
+
+/* Ensure logo image has no box styling from parent containers */
+.header-content .logo-image,
+.header-content a .logo-image {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
 }
 
 .hamburger {
@@ -43,11 +55,37 @@
 
 .logo {
   display: flex;
-  align-items: baseline;
-  gap: 0.2rem;
+  align-items: center;
+  justify-content: center;
   position: relative;
 }
 
+.logo-image {
+  height: 120px; /* Reduced size to make nav bar shorter */
+  width: auto;
+  object-fit: contain;
+  display: block;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Remove any box styling from Link wrapper around logo */
+a[href="/"] .logo-image,
+a[href="/"] {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  text-decoration: none !important;
+}
+
+/* OLD LOGO STYLES - COMMENTED OUT FOR FUTURE USE
 .logo-text {
   color: white;
   font-size: 1.5rem;
@@ -79,6 +117,7 @@
   font-weight: 400;
   font-family: serif;
 }
+*/
 
 .header-nav {
   display: flex;

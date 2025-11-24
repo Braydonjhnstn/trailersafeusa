@@ -460,12 +460,15 @@ function ProductsPage() {
           </div>
           
           <Link to="/" style={{ textDecoration: 'none' }}>
+            <img src="/trackcoverlogo.png" alt="Trailer Safe USA" className="logo-image" />
+            {/* OLD LOGO - COMMENTED OUT FOR FUTURE USE
             <div className="logo">
               <span className="logo-text">Trailer</span>
               <span className="logo-text-bold">Safe</span>
               <span className="logo-underline"></span>
               <span className="logo-text-small">USA</span>
             </div>
+            */}
           </Link>
           
           <nav className="header-nav">

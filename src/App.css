@@ -12,18 +12,23 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: #ffffff;
   min-height: 100vh;
+  /* COMMENTED OUT TO PREVENT SCROLLING - min-height: 100vh; */
+  overflow: hidden; /* Prevent scrolling on home page */
+  height: 100vh; /* Fixed height to prevent scrolling */
 }
 
 .App {
-  min-height: 100vh;
+  /* min-height: 100vh; COMMENTED OUT TO PREVENT SCROLLING */
+  height: 100vh; /* Fixed height to prevent scrolling */
   display: flex;
   flex-direction: column;
+  overflow: hidden; /* Prevent scrolling */
 }
 
 /* Header Styles */
 .header {
   background: #1a1a2e;
-  padding: 1rem 0;
+  padding: 0; /* No padding to make nav bar as short as possible */
   position: relative;
   z-index: 10;
 }
@@ -36,6 +41,17 @@ body {
   margin: 0 auto;
   padding: 0 2rem;
   position: relative;
+  background: transparent;
+  min-height: auto; /* Remove any minimum height constraint */
+  height: auto; /* Let height be determined by content only */
+}
+
+/* Ensure logo image has no box styling from parent containers */
+.header-content .logo-image {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
 }
 
 .hamburger {
@@ -58,11 +74,25 @@ body {
 
 .logo {
   display: flex;
-  align-items: baseline;
-  gap: 0.2rem;
+  align-items: center;
+  justify-content: center;
   position: relative;
 }
 
+.logo-image {
+  height: 120px; /* Reduced size to make nav bar shorter */
+  width: auto;
+  object-fit: contain;
+  display: block;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* OLD LOGO STYLES - COMMENTED OUT FOR FUTURE USE
 .logo-text {
   color: white;
   font-size: 1.5rem;
@@ -94,6 +124,7 @@ body {
   font-weight: 400;
   font-family: serif;
 }
+*/
 
 .header-nav {
   display: flex;
@@ -125,14 +156,70 @@ body {
   flex: 1;
   position: relative;
   overflow: hidden;
+  /* COMMENTED OUT TO PREVENT SCROLLING - flex: 1; */
+  height: calc(100vh - 80px); /* Fixed height: viewport height minus header */
 }
 
 .hero-image {
   width: 100%;
-  height: 93vh;
+  /* height: 93vh; COMMENTED OUT TO PREVENT SCROLLING */
+  height: 100%; /* Fill the hero section */
   object-fit: cover;
   object-position: center;
   display: block;
+}
+
+/* Hero Overlay with Text and Button */
+.hero-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  z-index: 5;
+}
+
+.hero-title {
+  color: white;
+  font-size: 4.5rem;
+  font-weight: 700;
+  font-family: sans-serif;
+  text-align: center;
+  margin: 0 0 1.5rem 0;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5),
+               0 0 20px rgba(0, 0, 0, 0.3),
+               0 0 40px rgba(0, 0, 0, 0.2);
+  letter-spacing: 2px;
+  line-height: 1.2;
+}
+
+.hero-shop-button {
+  background: rgba(0, 0, 0, 0.4);
+  border: 2px solid white;
+  color: white;
+  padding: 1rem 3rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: sans-serif;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3),
+              0 0 20px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+}
+
+.hero-shop-button:hover {
+  background: rgba(0, 0, 0, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4),
+              0 0 30px rgba(0, 0, 0, 0.3);
 }
 
 /* Products Section */
@@ -310,10 +397,10 @@ body {
   font-family: sans-serif;
 }
 
-/* Smooth scrolling */
-html {
+/* Smooth scrolling - COMMENTED OUT TO PREVENT SCROLLING */
+/* html {
   scroll-behavior: smooth;
-}
+} */
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -353,7 +440,17 @@ html {
   }
   
   .hero-image {
-    height: 50vh;
+    height: 100%;
+  }
+  
+  .hero-title {
+    font-size: 2.5rem;
+    letter-spacing: 1px;
+  }
+  
+  .hero-shop-button {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
   }
 }
 

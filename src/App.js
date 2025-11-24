@@ -16,12 +16,15 @@ function HomePage() {
             <div className="hamburger-line"></div>
           </div>
           
+          <img src="/Logo.png" alt="Trailer Safe USA" className="logo-image" />
+          {/* OLD LOGO - COMMENTED OUT FOR FUTURE USE
           <div className="logo">
             <span className="logo-text">Trailer</span>
             <span className="logo-text-bold">Safe</span>
             <span className="logo-underline"></span>
             <span className="logo-text-small">USA</span>
           </div>
+          */}
           
           <nav className="header-nav">
             <a href="/products" className="nav-link">Products</a>
@@ -34,10 +37,14 @@ function HomePage() {
       {/* Hero Image Section */}
       <section className="hero-section">
         <img src="/excavator.jpg" alt="Orange Kubota mini-excavator in field" className="hero-image" />
+        <div className="hero-overlay">
+          <h1 className="hero-title">Cover Your Tracks</h1>
+          <a href="/products" className="hero-shop-button">SHOP NOW</a>
+        </div>
       </section>
 
-      {/* Products Section */}
-      <section id="products" className="products-section">
+      {/* Products Section - COMMENTED OUT TO PREVENT SCROLLING */}
+      {/* <section id="products" className="products-section">
         <h1 className="products-title">Products</h1>
         <div className="products-grid">
           <div className="product-card">
@@ -58,10 +65,10 @@ function HomePage() {
             <button className="product-button">Learn More</button>
           </div>
         </div>
-      </section>
+      </section> */}
 
-      {/* About Us Section */}
-      <section id="about" className="about-section">
+      {/* About Us Section - COMMENTED OUT TO PREVENT SCROLLING */}
+      {/* <section id="about" className="about-section">
         <div className="about-content">
           <h2 className="about-title">About Us</h2>
           <p className="about-text">
@@ -74,10 +81,10 @@ function HomePage() {
             reliable products that stand up to the toughest working conditions.
           </p>
         </div>
-      </section>
+      </section> */}
 
-      {/* FAQ Section */}
-      <section id="faq" className="faq-section">
+      {/* FAQ Section - COMMENTED OUT TO PREVENT SCROLLING */}
+      {/* <section id="faq" className="faq-section">
         <div className="faq-content">
           <h2 className="faq-title">Frequently Asked Questions</h2>
           <div className="faq-grid">
@@ -99,7 +106,7 @@ function HomePage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }
