@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import './ProductsPage.css';
 import { shopifyRequest, SHOPIFY_QUERIES, transformProduct, SHOPIFY_CONFIG } from './shopifyConfig';
 import { useCart } from './CartContext';
@@ -9,6 +9,8 @@ function ProductsPage() {
   console.log('ProductsPage component rendering');
   const { addToCart, getCartItemCount } = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState('');
   
   // Remove home-page class and allow scrolling on products page
   useEffect(() => {
@@ -30,6 +32,7 @@ function ProductsPage() {
   const [filteredProducts, setFilteredProducts] = useState(null); // null = no search performed, [] = search performed with no results
   const [currentTrackSizes, setCurrentTrackSizes] = useState([]); // Track sizes for the current search (array to handle multiple)
   const [searchError, setSearchError] = useState(null); // Error message if search fails
+  const [textSearchQuery, setTextSearchQuery] = useState(''); // Text search query from search bar
 
   // Fallback products in case Shopify API fails
   const getFallbackProducts = () => [
@@ -151,6 +154,42 @@ function ProductsPage() {
 
     fetchProducts();
   }, []);
+
+  // Handle search query from URL parameter
+  useEffect(() => {
+    const queryParam = searchParams.get('search');
+    if (queryParam) {
+      setTextSearchQuery(queryParam);
+      // Auto-focus search input when coming from search icon
+      setTimeout(() => {
+        const searchInput = document.getElementById('text-search-input');
+        if (searchInput) {
+          searchInput.focus();
+        }
+      }, 100);
+    }
+  }, [searchParams]);
+
+  // Filter products by text search query (only if model search is not active)
+  useEffect(() => {
+    // If model search is active, don't override it with text search
+    if (selectedModel && filteredProducts !== null) {
+      return;
+    }
+    
+    if (textSearchQuery.trim()) {
+      const filtered = products.filter(product => {
+        const title = (product.title || '').toLowerCase();
+        const description = (product.description || '').toLowerCase();
+        const query = textSearchQuery.toLowerCase().trim();
+        return title.includes(query) || description.includes(query);
+      });
+      setFilteredProducts(filtered);
+    } else if (!selectedModel) {
+      // Only reset if we're not in model search mode
+      setFilteredProducts(null);
+    }
+  }, [textSearchQuery, products, selectedModel]);
 
   const handleProductClick = (product) => {
     setSelectedProduct(product);
@@ -371,6 +410,9 @@ function ProductsPage() {
   const handleSearch = () => {
     // Reset error state
     setSearchError(null);
+    // Clear text search when doing model search
+    setTextSearchQuery('');
+    setSearchParams({});
     
     // Filter products based on selected model and track size
     if (!selectedModel) {
@@ -433,9 +475,12 @@ function ProductsPage() {
     setSearchError(null); // Clear any error messages
     setSelectedMake('');
     setSelectedModel('');
+    setTextSearchQuery(''); // Clear text search
+    setSearchParams({}); // Clear URL params
   };
 
   // Use filtered products if search was performed, otherwise show all products
+  // Priority: model search > text search > all products
   const displayProducts = filteredProducts !== null ? filteredProducts : products;
 
   if (loading) {
@@ -496,17 +541,19 @@ function ProductsPage() {
             */}
           </Link>
           
-          <Link to="/cart" className="cart-icon-link">
-            <div className="cart-icon">
-              <svg width="25" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7 18C5.9 18 5.01 18.9 5.01 20C5.01 21.1 5.9 22 7 22C8.1 22 9 21.1 9 20C9 18.9 8.1 18 7 18ZM1 2V4H3L6.6 11.59L5.25 14.04C5.09 14.32 5 14.65 5 15C5 16.1 5.9 17 7 17H19V15H7.42C7.28 15 7.17 14.89 7.17 14.75L7.2 14.63L8.1 13H16.55C17.3 13 17.96 12.59 18.3 11.97L21.88 5.48C21.96 5.34 22 5.17 22 5C22 4.45 21.55 4 21 4H5.21L4.27 2H1ZM17 18C15.9 18 15.01 18.9 15.01 20C15.01 21.1 15.9 22 17 22C18.1 22 19 21.1 19 20C19 18.9 18.1 18 17 18Z" fill="white"/>
-              </svg>
-              {getCartItemCount() > 0 && (
-                <span className="cart-badge">{getCartItemCount()}</span>
-              )}
-            </div>
-          </Link>
-          
+          <div className="header-icons">
+            <Link to="/cart" className="cart-icon-link">
+              <div className="cart-icon">
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M7 18C5.9 18 5.01 18.9 5.01 20C5.01 21.1 5.9 22 7 22C8.1 22 9 21.1 9 20C9 18.9 8.1 18 7 18ZM1 2V4H3L6.6 11.59L5.25 14.04C5.09 14.32 5 14.65 5 15C5 16.1 5.9 17 7 17H19V15H7.42C7.28 15 7.17 14.89 7.17 14.75L7.2 14.63L8.1 13H16.55C17.3 13 17.96 12.59 18.3 11.97L21.88 5.48C21.96 5.34 22 5.17 22 5C22 4.45 21.55 4 21 4H5.21L4.27 2H1ZM17 18C15.9 18 15.01 18.9 15.01 20C15.01 21.1 15.9 22 17 22C18.1 22 19 21.1 19 20C19 18.9 18.1 18 17 18Z" fill="white"/>
+                </svg>
+                {getCartItemCount() > 0 && (
+                  <span className="cart-badge">{getCartItemCount()}</span>
+                )}
+              </div>
+            </Link>
+          </div>
+
           {/* NAVIGATION LINKS - REMOVED
           <nav className="header-nav">
             <a href="/products" className="nav-link">Products</a>
@@ -523,6 +570,26 @@ function ProductsPage() {
         <div className="products-title-section">
           <h1 className="products-main-title">Products</h1>
           <div className="products-title-line"></div>
+        </div>
+
+        {/* Search Bar */}
+        <div className="text-search-bar">
+          <input
+            id="text-search-input"
+            type="text"
+            className="text-search-input"
+            placeholder="Search products by title or description..."
+            value={textSearchQuery}
+            onChange={(e) => {
+              setTextSearchQuery(e.target.value);
+              setSearchParams(e.target.value ? { search: e.target.value } : {});
+            }}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+              }
+            }}
+          />
         </div>
 
         {/* Dropdown Bar */}

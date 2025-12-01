@@ -102,12 +102,43 @@
   padding-left: 2.5rem;
 }
 
-/* Cart Icon Styles - Shared with other pages */
-.cart-icon-link {
+/* Header Icons Styles */
+.header-icons {
   position: absolute;
   right: 2rem;
   top: 50%;
   transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.search-icon-link {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.search-icon:hover {
+  opacity: 0.7;
+}
+
+.search-icon svg {
+  width: 25px;
+  height: 25px;
+}
+
+/* Cart Icon Styles - Shared with other pages */
+.cart-icon-link {
   text-decoration: none;
   display: flex;
   align-items: center;
