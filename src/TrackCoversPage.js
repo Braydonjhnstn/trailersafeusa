@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from './CartContext';
 import './TrackCoversPage.css';
+import Footer from './Footer';
 
 function TrackCoversPage() {
   const { getCartItemCount } = useCart();
@@ -143,13 +144,7 @@ function TrackCoversPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="page-footer">
-        <div className="footer-content">
-          <p>&copy; 2024 Trailer Safe USA. All rights reserved.</p>
-          <p>Professional equipment protection solutions</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

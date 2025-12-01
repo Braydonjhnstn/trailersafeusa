@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from './CartContext';
 import { createShopifyCheckout, SHOPIFY_CONFIG } from './shopifyConfig';
 import './CartPage.css';
+import Footer from './Footer';
 
 function CartPage() {
   const { cartItems, removeFromCart, updateQuantity, getCartTotal, getCartItemCount } = useCart();
@@ -206,6 +207,7 @@ function CartPage() {
           </>
         )}
       </div>
+      <Footer />
     </div>
   );
 }

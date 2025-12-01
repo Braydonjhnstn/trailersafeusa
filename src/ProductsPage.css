@@ -4,6 +4,8 @@
   background: #ffffff;
   padding: 0;
   overflow-y: auto; /* Allow scrolling on products page */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Header Styles */
@@ -288,6 +290,7 @@
   max-width: 1600px;
   margin: 0 auto;
   padding: 2rem 1.5rem;
+  flex: 1;
 }
 
 /* Title Section */

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from './CartContext';
 import './AboutPage.css';
+import Footer from './Footer';
 
 function AboutPage() {
   const { getCartItemCount } = useCart();
@@ -51,16 +52,14 @@ function AboutPage() {
         <h1 className="about-main-title">About Us</h1>
         <div className="about-content">
           <p className="about-text">
-            Trailer Safe USA is your trusted partner in equipment protection. With years of experience 
-            in the industry, we specialize in providing high-quality track covers and protection solutions 
-            for heavy machinery and construction equipment.
+            <strong>Trailer Safe USA</strong> is more than a company—<strong>it's a family</strong>. Built by siblings, aunts, uncles, and cousins, our team is united by trust, craftsmanship, and shared values. That spirit drives our mission: delivering dependable transport solutions for heavy equipment operators who move machinery multiple times a day. From excavators to loaders, we understand the urgency and precision your work demands. <strong>Proudly Made in the USA</strong>, our products are engineered for durability, safety, and ease of use—because your time is valuable and your cargo is critical.
           </p>
           <p className="about-text">
-            Our mission is to help you protect your valuable equipment investments with durable, 
-            reliable products that stand up to the toughest working conditions.
+            <strong>Safe. Durable. Made in the USA</strong>—for the equipment that keeps you moving.
           </p>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

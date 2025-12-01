@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import './ProductsPage.css';
 import { shopifyRequest, SHOPIFY_QUERIES, transformProduct, SHOPIFY_CONFIG } from './shopifyConfig';
 import { useCart } from './CartContext';
+import Footer from './Footer';
 
 function ProductsPage() {
   console.log('ProductsPage component rendering');
@@ -664,6 +665,7 @@ function ProductsPage() {
           </div>
         </div>
       )}
+      <Footer />
     </div>
   );
 }

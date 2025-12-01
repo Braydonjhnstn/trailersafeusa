@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from './CartContext';
 import './FAQPage.css';
+import Footer from './Footer';
 
 function FAQPage() {
   const { getCartItemCount } = useCart();
@@ -68,6 +69,7 @@ function FAQPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
