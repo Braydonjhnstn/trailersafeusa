@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import './ProductsPage.css';
-import { shopifyRequest, SHOPIFY_QUERIES, transformProduct, SHOPIFY_CONFIG } from './shopifyConfig';
+import { shopifyRequest, SHOPIFY_QUERIES, transformProduct, SHOPIFY_CONFIG, createShopifyCheckout } from './shopifyConfig';
 import { useCart } from './CartContext';
 import Footer from './Footer';
 
 function ProductsPage() {
   console.log('ProductsPage component rendering');
-  const { addToCart, getCartItemCount } = useCart();
+  const { addToCart, getCartItemCount, cartItems } = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isBuyNowProcessing, setIsBuyNowProcessing] = useState(false);
+  const [buyNowError, setBuyNowError] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
   
@@ -199,6 +201,7 @@ function ProductsPage() {
   const handleCloseModal = () => {
     setSelectedProduct(null);
     setQuantity(1);
+    setBuyNowError(null);
   };
 
   const handleQuantityChange = (e) => {
@@ -212,12 +215,37 @@ function ProductsPage() {
     handleCloseModal();
   };
 
-  const handleBuyNow = () => {
+  const handleBuyNow = async () => {
     if (!selectedProduct) return;
-    // TODO: Implement Shopify checkout API integration
-    console.log(`Buying ${quantity} of product ${selectedProduct.id} now`);
-    alert(`Redirecting to checkout for ${quantity} ${selectedProduct.title}... (Demo mode)`);
-    handleCloseModal();
+
+    setIsBuyNowProcessing(true);
+    setBuyNowError(null);
+
+    try {
+      if (!SHOPIFY_CONFIG.domain || !SHOPIFY_CONFIG.storefrontAccessToken) {
+        throw new Error('Shopify is not configured. Please contact support.');
+      }
+
+      // Same as Add to Cart: add product to cart (merge quantity if already in cart)
+      addToCart(selectedProduct, quantity);
+
+      // Build checkout items = current cart + this product (already merged in cart state logic)
+      const existingItem = cartItems.find(item => item.id === selectedProduct.id);
+      const checkoutItems = existingItem
+        ? cartItems.map(item =>
+            item.id === selectedProduct.id
+              ? { ...item, quantity: item.quantity + quantity }
+              : item
+          )
+        : [...cartItems, { ...selectedProduct, quantity }];
+
+      const checkoutUrl = await createShopifyCheckout(checkoutItems);
+      window.location.href = checkoutUrl;
+    } catch (error) {
+      console.error('Buy now checkout error:', error);
+      setBuyNowError(error.message || 'Failed to start checkout. Please try again.');
+      setIsBuyNowProcessing(false);
+    }
   };
 
   const handleMakeChange = (e) => {
@@ -719,12 +747,19 @@ function ProductsPage() {
                   />
                 </div>
                 
+                {buyNowError && (
+                  <p className="modal-checkout-error">{buyNowError}</p>
+                )}
                 <div className="modal-actions">
                   <button className="btn-add-to-cart" onClick={handleAddToCart}>
                     Add to Cart
                   </button>
-                  <button className="btn-buy-now" onClick={handleBuyNow}>
-                    Buy it Now
+                  <button
+                    className="btn-buy-now"
+                    onClick={handleBuyNow}
+                    disabled={isBuyNowProcessing}
+                  >
+                    {isBuyNowProcessing ? 'Processing…' : 'Buy it Now'}
                   </button>
                 </div>
               </div>
