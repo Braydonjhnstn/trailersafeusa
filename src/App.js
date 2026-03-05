@@ -67,7 +67,7 @@ function HomePage() {
           )}
           
           <Link to="/" style={{ textDecoration: 'none' }}>
-            <img src="/Logo2.png" alt="Trailer Safe USA" className="logo-image" />
+            <img src="/new.logo2.png" alt="Trailer Safe USA" className="logo-image" />
           </Link>
           
           <div className="header-icons">

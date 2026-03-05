@@ -558,7 +558,7 @@ function ProductsPage() {
           )}
           
           <Link to="/" style={{ textDecoration: 'none' }}>
-            <img src="/Logo2.png" alt="Trailer Safe USA" className="logo-image" />
+            <img src="/new.logo2.png" alt="Trailer Safe USA" className="logo-image" />
             {/* OLD LOGO - COMMENTED OUT FOR FUTURE USE
             <div className="logo">
               <span className="logo-text">Trailer</span>
