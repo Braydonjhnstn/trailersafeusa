@@ -10,17 +10,18 @@
    =========================================================================== */
 
 :root {
-  --cs-bg: #14171b;
-  --cs-bg-panel: #15181d;
-  --cs-bg-band: #1b1f25;
-  --cs-bg-footer: #101316;
-  --cs-input: #101317;
-  --cs-line: #2b313a;
-  --cs-orange: #e8a33c;
-  --cs-orange-hover: #f1b558;
-  --cs-text: #f3f4f6;
-  --cs-muted: #aab0b8;
-  --cs-placeholder: #848b94;
+  /* Brand palette */
+  --cs-bg: #282E33;          /* Graphite Black — primary background */
+  --cs-bg-panel: #2D343A;    /* form panel — slight lift off the background */
+  --cs-bg-band: #2D343A;     /* feature strip */
+  --cs-bg-footer: #20252A;   /* footer — grounded, a touch darker */
+  --cs-input: #20252A;       /* input fields — read as inset */
+  --cs-line: #6A6072;        /* Steel Gray — borders */
+  --cs-orange: #C7922F;      /* Ochre Gold — accent */
+  --cs-orange-hover: #D9A641;
+  --cs-text: #E6E4DE;        /* Bone White — typography */
+  --cs-muted: #A3A6A8;       /* Concrete Gray — support tones */
+  --cs-placeholder: #A3A6A8; /* Concrete Gray */
   --cs-heading-font: 'Oswald', 'Montserrat', 'Inter', sans-serif;
 }
 
@@ -84,7 +85,7 @@ body { background: var(--cs-bg); }
   align-items: center;
   /* The background image is set inline in ComingSoon.js (runtime `/` path to a
      public/ asset) so webpack's css-loader doesn't try to bundle it. */
-  background-color: #0c0d0f;
+  background-color: #1d2226;
   background-size: cover;
   background-position: center;
 }
@@ -96,7 +97,7 @@ body { background: var(--cs-bg); }
   line-height: 0.92;
   letter-spacing: 0.01em;
   font-size: clamp(2.6rem, 5vw, 4.6rem);
-  color: #fff;
+  color: var(--cs-text);
   margin: 0;
 }
 .cs-accent-bar {
@@ -107,7 +108,7 @@ body { background: var(--cs-bg); }
   margin: 1rem 0;
 }
 .cs-hero-sub {
-  color: #d7dadf;
+  color: var(--cs-text);
   font-size: 1rem;
   line-height: 1.5;
   margin-bottom: 1.5rem;
@@ -131,9 +132,9 @@ body { background: var(--cs-bg); }
 .cs-btn-stack { display: flex; flex-direction: column; line-height: 1.15; text-align: left; }
 .cs-btn-stack strong { font-size: 1rem; font-weight: 700; }
 .cs-btn-stack small { font-size: 0.76rem; font-weight: 400; opacity: 0.8; }
-.cs-btn-primary { background: var(--cs-orange); color: #17191c; }
+.cs-btn-primary { background: var(--cs-orange); color: #282E33; }
 .cs-btn-primary:hover { background: var(--cs-orange-hover); }
-.cs-btn-outline { background: transparent; border-color: rgba(255, 255, 255, 0.38); color: #fff; }
+.cs-btn-outline { background: transparent; border-color: rgba(230, 228, 222, 0.4); color: var(--cs-text); }
 .cs-btn-outline:hover { border-color: #fff; }
 .cs-btn-outline svg { color: var(--cs-orange); }
 .cs-btn:active { transform: translateY(1px); }
@@ -183,7 +184,7 @@ body { background: var(--cs-bg); }
 .cs-form select {
   appearance: none;
   -webkit-appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23848b94' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23A3A6A8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1rem center;
   padding-right: 2.5rem;
