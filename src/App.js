@@ -1,71 +1,54 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import Header from './Header';
-import TrackCoversPage from './TrackCoversPage';
-import ProductsPage from './ProductsPage';
-import CartPage from './CartPage';
-import AboutPage from './AboutPage';
-import FAQPage from './FAQPage';
-import { CartProvider } from './CartContext';
+import ComingSoon from './ComingSoon';
 
-function HomePage() {
-  const [isMobile, setIsMobile] = useState(false);
+// ============================================================================
+// COMING SOON MODE
+// ----------------------------------------------------------------------------
+// The full storefront is preserved in the repo as a benchmark for the upcoming
+// redesign, but is currently INACTIVE — every route renders <ComingSoon />.
+//
+// The Shopify integration (shopifyConfig.js) and cart (CartContext.js) are left
+// completely untouched so the store can be switched back on unchanged.
+//
+// TO RESTORE THE FULL STOREFRONT:
+//   1. Uncomment the imports and the storefront <Routes> block below.
+//   2. Delete (or comment out) the catch-all ComingSoon route.
+// ============================================================================
 
-  // Detect mobile device (used to position the hero overlay)
-  useEffect(() => {
-    const checkMobile = () => {
-      const isMobileDevice = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      setIsMobile(isMobileDevice);
-    };
-
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-
-    return () => {
-      window.removeEventListener('resize', checkMobile);
-    };
-  }, []);
-
-  // Add class to body to prevent scrolling on the home page
-  useEffect(() => {
-    document.body.classList.add('home-page');
-    return () => {
-      document.body.classList.remove('home-page');
-    };
-  }, []);
-
-  return (
-    <div className="App">
-      <Header />
-
-      {/* Hero Image Section */}
-      <section className="hero-section">
-        <img src="/excavator.jpg" alt="Orange Kubota mini-excavator in field" className="hero-image" />
-        <div className={`hero-overlay ${isMobile ? 'hero-overlay-mobile' : ''}`}>
-          <h1 className="hero-title">Cover Your Tracks</h1>
-          <a href="/products" className="hero-shop-button">SHOP NOW</a>
-        </div>
-      </section>
-    </div>
-  );
-}
+// import { CartProvider } from './CartContext';
+// import HomePage from './HomePage';
+// import TrackCoversPage from './TrackCoversPage';
+// import ProductsPage from './ProductsPage';
+// import CartPage from './CartPage';
+// import AboutPage from './AboutPage';
+// import FAQPage from './FAQPage';
 
 function App() {
   return (
-    <CartProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/track-covers" element={<TrackCoversPage />} />
-          <Route path="/products" element={<ProductsPage />} />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/faq" element={<FAQPage />} />
-        </Routes>
-      </Router>
-    </CartProvider>
+    <Router>
+      <Routes>
+        <Route path="*" element={<ComingSoon />} />
+      </Routes>
+    </Router>
   );
+
+  // --- Full storefront (inactive — restore by following the steps above) ---
+  // return (
+  //   <CartProvider>
+  //     <Router>
+  //       <Routes>
+  //         <Route path="/" element={<HomePage />} />
+  //         <Route path="/track-covers" element={<TrackCoversPage />} />
+  //         <Route path="/products" element={<ProductsPage />} />
+  //         <Route path="/cart" element={<CartPage />} />
+  //         <Route path="/about" element={<AboutPage />} />
+  //         <Route path="/faq" element={<FAQPage />} />
+  //       </Routes>
+  //     </Router>
+  //   </CartProvider>
+  // );
 }
 
 export default App;

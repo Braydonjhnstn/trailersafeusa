@@ -6,6 +6,10 @@ equipment (mini-excavators, skid steers, compact track loaders).
 Customers find the right cover by selecting their machine's **Make → Model**, which maps to one
 or more **track sizes**, then check out through **Shopify**.
 
+> **Status:** the site is currently in **"Coming Soon" mode** — it serves a single pre-order
+> landing page ([src/ComingSoon.js](src/ComingSoon.js)). The full storefront below is preserved
+> but inactive; see [CLAUDE.md](CLAUDE.md) for how to switch it back on.
+
 ## Tech stack
 
 - **React 18** + **React Router 7**
@@ -48,7 +52,9 @@ still works in development. See [SHOPIFY_SETUP.md](SHOPIFY_SETUP.md) for how to 
 public/             Static assets + index.html template (copied into dist/)
 src/
   index.js          Entry point
-  App.js            Router + HomePage (hero)
+  App.js            Router (currently in Coming Soon mode)
+  ComingSoon.js     Active pre-order landing page
+  HomePage.js       Storefront home/hero (inactive benchmark)
   Header.js         Shared header (nav, search, cart) — edit nav here, once
   Footer.js         Shared footer
   ProductsPage.js   Catalog, Make/Model + text search, product modal

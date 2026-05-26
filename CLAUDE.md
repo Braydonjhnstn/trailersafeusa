@@ -13,6 +13,28 @@ The core customer flow: pick your machine's **Make → Model**, which resolves t
 There is no custom backend. Product data and checkout come from Shopify's Storefront API;
 the cart lives in the browser (`localStorage`).
 
+## ⚠️ Current state: "Coming Soon" mode
+
+The site is currently serving a **single "Coming Soon" pre-order landing page**
+([src/ComingSoon.js](src/ComingSoon.js)). The full storefront is **preserved but inactive** —
+it's kept as a working benchmark for an upcoming redesign based on the new landing-page look.
+
+- [src/App.js](src/App.js) routes **every path** to `<ComingSoon />`. The real storefront routes
+  (and the `CartProvider`) are commented out there, with restore steps in the file header.
+- **The Shopify integration ([shopifyConfig.js](src/shopifyConfig.js)) and cart
+  ([CartContext.js](src/CartContext.js)) are untouched** — don't modify them; the store must be
+  able to switch back on exactly as it was.
+- The landing page uses the **existing** logo (`public/new.logo2.png`) and hero photo
+  (`public/excavator.jpg`) as placeholders until final brand assets are delivered.
+- **The pre-order form has no backend yet** — `handleSubmit` only shows a client-side
+  confirmation. Wiring it to a real destination (email service / CRM / serverless endpoint) is
+  still a pending decision; see the `NOTE` in `ComingSoon.js`.
+- The form's Manufacturer/Model dropdowns reuse `MAKES` / `getModelsForMake` from
+  [equipmentData.js](src/equipmentData.js).
+
+**To restore the full storefront:** follow the steps in the header comment of `src/App.js`
+(uncomment the storefront imports + routes, remove the catch-all `ComingSoon` route).
+
 ## Commands
 
 ```bash
@@ -52,7 +74,9 @@ Required for live Shopify data; without them the app silently uses hardcoded fal
 | File | Responsibility |
 |---|---|
 | `index.js` | Entry point; mounts `<App>` inside `<ErrorBoundary>` |
-| `App.js` | Router + route table, and the `HomePage` component (hero) |
+| `App.js` | Router + route table (currently in Coming Soon mode — see above) |
+| `ComingSoon.js` | **Active page** — pre-order landing page (topbar, hero, form, features, footer) |
+| `HomePage.js` | Storefront home/hero (inactive; preserved benchmark) |
 | `Header.js` | **Shared** site header: hamburger menu, logo, optional search modal, cart icon |
 | `Footer.js` | Shared footer |
 | `ProductsPage.js` | Catalog: fetch, Make/Model + text search, product modal, add-to-cart / buy-now |
