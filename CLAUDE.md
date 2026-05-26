@@ -52,6 +52,7 @@ There is **no test runner and no linter configured** — don't run `npm test`/`n
 - **React Router 7** (`BrowserRouter`) — client-side routing
 - **Webpack 5 + Babel** for bundling (no Create React App, no Vite). Config: [webpack.config.js](webpack.config.js)
 - **Plain CSS**, one stylesheet per page (no CSS modules, no Tailwind, no preprocessor)
+- **lucide-react** for the Coming Soon page's feature/utility icons (social glyphs stay inline SVGs)
 - **Shopify Storefront API** (GraphQL) for products + checkout
 
 ## Environment variables
