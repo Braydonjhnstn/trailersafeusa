@@ -269,13 +269,13 @@ body { background: var(--cs-bg); }
 .cs-footer-col a { display: block; color: var(--cs-muted); font-size: 0.86rem; padding: 0.22rem 0; }
 .cs-footer-col a:hover { color: var(--cs-orange); }
 
-.cs-footer-hq { position: relative; }
+.cs-hq-top { display: flex; align-items: center; gap: 0.8rem; }
 .cs-hq-head { display: flex; align-items: flex-start; gap: 0.4rem; }
 .cs-hq-head svg { width: 20px; height: 20px; color: var(--cs-orange); flex-shrink: 0; margin-top: 2px; }
 .cs-hq-head span { font-family: var(--cs-heading-font); text-transform: uppercase; font-size: 0.9rem; line-height: 1.2; letter-spacing: 0.03em; }
 .cs-hq-head strong { color: var(--cs-orange); font-size: 1.02rem; }
 .cs-footer-hq > p { color: var(--cs-muted); font-size: 0.8rem; margin-top: 0.5rem; max-width: 12rem; }
-.cs-idaho { position: absolute; top: -2px; right: 0; width: 52px; height: auto; display: block; }
+.cs-idaho { height: 46px; width: auto; display: block; flex-shrink: 0; }
 
 .cs-footer-bottom {
   display: flex;

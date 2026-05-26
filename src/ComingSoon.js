@@ -285,9 +285,11 @@ function ComingSoon() {
           </nav>
 
           <div className="cs-footer-hq">
-            <div className="cs-hq-head"><PinIcon /> <span>HEADQUARTERED IN<br /><strong>EMMETT, IDAHO</strong></span></div>
+            <div className="cs-hq-top">
+              <div className="cs-hq-head"><PinIcon /> <span>HEADQUARTERED IN<br /><strong>EMMETT, IDAHO</strong></span></div>
+              <img src="/idaho.svg" alt="Idaho" className="cs-idaho" />
+            </div>
             <p>Proudly designed and supported in the USA.</p>
-            <img src="/idaho.svg" alt="Idaho" className="cs-idaho" />
           </div>
         </div>
 
