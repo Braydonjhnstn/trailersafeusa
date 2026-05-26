@@ -1,0 +1,316 @@
+/* ===========================================================================
+   Coming Soon landing page
+   Self-contained, namespaced with `cs-` so it never collides with the
+   preserved storefront CSS. Uses the existing logo (new.logo2.png) and hero
+   photo (excavator.jpg) as placeholders until final brand assets arrive.
+
+   Sizing is intentionally compact so the full page (top bar + hero/form +
+   feature strip + footer) fits within a standard desktop viewport, matching
+   the marketing mockup. It still scrolls gracefully on short/mobile screens.
+   =========================================================================== */
+
+:root {
+  /* Brand palette */
+  --cs-bg: #282E33;          /* Graphite Black — primary background */
+  --cs-bg-panel: #2D343A;    /* form panel — slight lift off the background */
+  --cs-bg-band: #2D343A;     /* feature strip */
+  --cs-bg-footer: #20252A;   /* footer — grounded, a touch darker */
+  --cs-input: #20252A;       /* input fields — read as inset */
+  --cs-line: #6A6072;        /* Steel Gray — borders */
+  --cs-orange: #C7922F;      /* Ochre Gold — accent */
+  --cs-orange-hover: #D9A641;
+  --cs-text: #E6E4DE;        /* Bone White — typography */
+  --cs-muted: #A3A6A8;       /* Concrete Gray — support tones */
+  --cs-placeholder: #A3A6A8; /* Concrete Gray */
+  --cs-heading-font: 'Oswald', 'Montserrat', 'Inter', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--cs-bg); }
+
+.cs-page {
+  background: var(--cs-bg);
+  color: var(--cs-text);
+  /* Desktop: lock the whole page to the viewport — no page scroll (matches the
+     mockup). The flex column anchors the footer to the bottom; the form panel
+     scrolls internally only if a very short screen can't fit it. Reset to a
+     normal scrolling document on mobile (see the max-width: 980px block). */
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.cs-page a { text-decoration: none; color: inherit; }
+
+/* ---- Top bar ---- */
+.cs-topbar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 2.5rem;
+  background: var(--cs-bg);
+}
+.cs-logo { height: 42px; width: auto; display: block; }
+.cs-topbar-phone {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--cs-heading-font);
+  letter-spacing: 0.04em;
+  font-size: 1.05rem;
+  color: var(--cs-text);
+}
+.cs-topbar-phone strong { color: var(--cs-orange); margin-left: 0.15rem; }
+.cs-phone-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: var(--cs-orange);
+}
+.cs-phone-circle svg { width: 20px; height: 20px; }
+
+/* ---- Main: hero + form ---- */
+.cs-main {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: 1.2fr 0.95fr;
+  align-items: stretch;
+  min-height: 0;
+}
+
+.cs-hero {
+  position: relative;
+  padding: 2.25rem 3rem;
+  display: flex;
+  align-items: center;
+  /* The background image is set inline in ComingSoon.js (runtime `/` path to a
+     public/ asset) so webpack's css-loader doesn't try to bundle it. */
+  background-color: #1d2226;
+  background-size: cover;
+  background-position: center;
+}
+.cs-hero-inner { max-width: 34rem; }
+.cs-coming-soon {
+  font-family: var(--cs-heading-font);
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 0.92;
+  letter-spacing: 0.01em;
+  font-size: clamp(2.4rem, 4.4vw, 4.1rem);
+  color: var(--cs-text);
+  margin: 0;
+}
+.cs-accent-bar {
+  display: block;
+  width: 68px;
+  height: 4px;
+  background: var(--cs-orange);
+  margin: 1rem 0;
+}
+.cs-hero-sub {
+  color: var(--cs-text);
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+.cs-hero-actions { display: flex; gap: 0.85rem; flex-wrap: wrap; }
+
+/* ---- Buttons ---- */
+.cs-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 1.35rem;
+  border-radius: 5px;
+  font-family: var(--cs-heading-font);
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.05s ease;
+}
+.cs-btn svg { width: 22px; height: 22px; flex-shrink: 0; }
+.cs-btn-stack { display: flex; flex-direction: column; line-height: 1.15; text-align: left; }
+.cs-btn-stack strong { font-size: 1rem; font-weight: 700; }
+.cs-btn-stack small { font-size: 0.76rem; font-weight: 400; opacity: 0.8; }
+.cs-btn-primary { background: var(--cs-orange); color: #282E33; }
+.cs-btn-primary:hover { background: var(--cs-orange-hover); }
+.cs-btn-outline { background: transparent; border-color: rgba(230, 228, 222, 0.4); color: var(--cs-text); }
+.cs-btn-outline:hover { border-color: #fff; }
+.cs-btn-outline svg { color: var(--cs-orange); }
+.cs-btn:active { transform: translateY(1px); }
+
+/* ---- Pre-order form ---- */
+.cs-form-panel {
+  background: var(--cs-bg-panel);
+  padding: 1.4rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* anchor to top so the heading is never clipped under the nav */
+  min-height: 0;
+  overflow-y: auto;
+}
+.cs-form-title {
+  font-family: var(--cs-heading-font);
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.3rem;
+}
+.cs-accent { color: var(--cs-orange); }
+.cs-form-sub { color: var(--cs-muted); line-height: 1.35; margin-bottom: 0.75rem; font-size: 0.85rem; }
+
+.cs-form { display: flex; flex-direction: column; gap: 0.5rem; }
+.cs-form-row { display: flex; gap: 0.5rem; }
+.cs-form-row > * { flex: 1; min-width: 0; }
+
+.cs-form input,
+.cs-form select,
+.cs-form textarea {
+  width: 100%;
+  background: var(--cs-input);
+  border: 1px solid var(--cs-line);
+  border-radius: 5px;
+  padding: 0.48rem 0.9rem;
+  color: var(--cs-text);
+  font-size: 0.88rem;
+  font-family: inherit;
+}
+.cs-form textarea { resize: vertical; min-height: 42px; }
+.cs-form input::placeholder,
+.cs-form textarea::placeholder { color: var(--cs-placeholder); }
+.cs-form input:focus,
+.cs-form select:focus,
+.cs-form textarea:focus { outline: none; border-color: var(--cs-orange); }
+
+.cs-form select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23A3A6A8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+.cs-form select:disabled { opacity: 0.55; cursor: not-allowed; }
+.cs-form select:invalid { color: var(--cs-placeholder); }
+
+.cs-btn-submit {
+  justify-content: center;
+  width: 100%;
+  margin-top: 0.2rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.7rem;
+}
+
+.cs-privacy-note {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--cs-muted);
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+}
+.cs-privacy-note svg { width: 16px; height: 16px; color: var(--cs-orange); flex-shrink: 0; }
+
+.cs-form-success { text-align: center; padding: 1.5rem 0.5rem; }
+.cs-form-success svg { width: 52px; height: 52px; color: var(--cs-orange); margin-bottom: 0.9rem; }
+.cs-form-success h3 { font-family: var(--cs-heading-font); text-transform: uppercase; font-size: 1.35rem; margin-bottom: 0.5rem; }
+.cs-form-success p { color: var(--cs-muted); line-height: 1.5; }
+
+/* ---- Feature strip ---- */
+.cs-features {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: var(--cs-bg-band);
+  padding: 0.95rem 2.5rem;
+  gap: 1.25rem;
+}
+.cs-feature { display: flex; align-items: flex-start; gap: 0.85rem; padding: 0.1rem 1rem; }
+.cs-feature + .cs-feature { border-left: 1px solid var(--cs-line); }
+.cs-feature > svg { width: 32px; height: 32px; color: var(--cs-orange); flex-shrink: 0; }
+.cs-feature h3 { font-family: var(--cs-heading-font); text-transform: uppercase; font-size: 0.92rem; letter-spacing: 0.02em; margin-bottom: 0.25rem; }
+.cs-feature p { color: var(--cs-muted); font-size: 0.82rem; line-height: 1.4; }
+
+/* ---- Footer ---- */
+.cs-footer { flex: 0 0 auto; background: var(--cs-bg-footer); padding: 1.3rem 2.5rem 0.85rem; }
+.cs-footer-main {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr 1.3fr;
+  gap: 1.5rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid var(--cs-line);
+}
+.cs-footer-brand .cs-logo { height: 36px; margin-bottom: 0.7rem; }
+.cs-footer-brand p { color: var(--cs-muted); font-size: 0.85rem; line-height: 1.45; margin-bottom: 0.7rem; max-width: 17rem; }
+.cs-socials { display: flex; gap: 0.6rem; }
+.cs-socials a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  background: var(--cs-orange); /* ochre box ... */
+  color: var(--cs-bg);          /* ... with a dark (graphite) glyph inside */
+  transition: background 0.15s ease;
+}
+.cs-socials a:hover { background: var(--cs-orange-hover); }
+.cs-socials svg { width: 17px; height: 17px; }
+
+.cs-footer-col h4 { font-family: var(--cs-heading-font); text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.04em; margin-bottom: 0.6rem; }
+.cs-footer-col a { display: block; color: var(--cs-muted); font-size: 0.86rem; padding: 0.22rem 0; }
+.cs-footer-col a:hover { color: var(--cs-orange); }
+
+.cs-hq-top { display: flex; align-items: center; gap: 0.8rem; }
+.cs-hq-head { display: flex; align-items: flex-start; gap: 0.4rem; }
+.cs-hq-head svg { width: 20px; height: 20px; color: var(--cs-orange); flex-shrink: 0; margin-top: 2px; }
+.cs-hq-head span { font-family: var(--cs-heading-font); text-transform: uppercase; font-size: 0.9rem; line-height: 1.2; letter-spacing: 0.03em; }
+.cs-hq-head strong { color: var(--cs-orange); font-size: 1.02rem; }
+.cs-footer-hq > p { color: var(--cs-muted); font-size: 0.8rem; margin-top: 0.5rem; max-width: 12rem; }
+.cs-idaho { height: 72px; width: auto; display: block; flex-shrink: 0; }
+
+.cs-footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.85rem;
+  color: var(--cs-muted);
+  font-size: 0.8rem;
+}
+.cs-legal { display: flex; gap: 1.5rem; }
+.cs-legal a:hover { color: var(--cs-orange); }
+
+/* ---- Responsive ---- */
+@media (max-width: 980px) {
+  .cs-page { display: block; height: auto; overflow: visible; }
+  .cs-form-panel { overflow-y: visible; }
+  .cs-main { grid-template-columns: 1fr; }
+  .cs-hero { min-height: 380px; padding: 3rem 2rem; }
+  .cs-features { grid-template-columns: repeat(2, 1fr); padding: 1.5rem 2rem; }
+  .cs-feature:nth-child(3) { border-left: none; }
+  .cs-footer-main { grid-template-columns: 1fr 1fr; }
+  .cs-footer-hq { grid-column: span 2; }
+}
+
+@media (max-width: 600px) {
+  .cs-topbar { padding: 0.8rem 1.25rem; flex-wrap: wrap; gap: 0.5rem; }
+  .cs-topbar-phone { font-size: 0.9rem; }
+  .cs-logo { height: 38px; }
+  .cs-hero { padding: 2.5rem 1.25rem; min-height: 320px; }
+  .cs-form-panel { padding: 2.25rem 1.25rem; }
+  .cs-form-row { flex-direction: column; }
+  .cs-features { grid-template-columns: 1fr; padding: 1.5rem 1.25rem; }
+  .cs-feature + .cs-feature { border-left: none; border-top: 1px solid var(--cs-line); padding-top: 1.25rem; }
+  .cs-footer { padding: 2.25rem 1.25rem 1.25rem; }
+  .cs-footer-main { grid-template-columns: 1fr; gap: 1.75rem; }
+  .cs-footer-hq { grid-column: auto; }
+  .cs-footer-bottom { flex-direction: column; gap: 0.75rem; text-align: center; }
+}

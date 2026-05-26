@@ -1,78 +1,88 @@
-# TrackCovers - Simple React Website
+# Trailer Safe USA
 
-A modern, responsive React website built with React 18, Webpack 5, and modern CSS.
+A React storefront for **"Bigfoot" rubber track covers** — protective covers for compact heavy
+equipment (mini-excavators, skid steers, compact track loaders).
 
-## Features
+Customers find the right cover by selecting their machine's **Make → Model**, which maps to one
+or more **track sizes**, then check out through **Shopify**.
 
-- ⚛️ React 18 with Hooks
-- 📦 Webpack 5 with Hot Module Replacement
-- 🎨 Modern, responsive design
-- 🚀 Fast development setup
-- 📱 Mobile-friendly interface
+> **Status:** the site is currently in **"Coming Soon" mode** — it serves a single pre-order
+> landing page ([src/ComingSoon.js](src/ComingSoon.js)). The full storefront below is preserved
+> but inactive; see [CLAUDE.md](CLAUDE.md) for how to switch it back on.
 
-## Getting Started
+## Tech stack
 
-### Prerequisites
+- **React 18** + **React Router 7**
+- **Webpack 5** + **Babel** (no Create React App / Vite)
+- Plain CSS (one stylesheet per page)
+- **Shopify Storefront API** (GraphQL) for products and checkout
+- Cart state in React Context, persisted to `localStorage`
 
-- Node.js (version 14 or higher)
-- npm or yarn
+## Getting started
 
-### Installation
-
-1. Install dependencies:
 ```bash
 npm install
+npm start        # http://localhost:3000
 ```
 
-2. Start the development server:
-```bash
-npm start
+### Shopify configuration
+
+Live product and checkout data require Shopify credentials. Create a `.env` file in the project
+root (it is gitignored):
+
+```env
+REACT_APP_SHOPIFY_DOMAIN=your-store.myshopify.com
+REACT_APP_SHOPIFY_STOREFRONT_TOKEN=your-storefront-access-token
 ```
 
-3. Open your browser and navigate to `http://localhost:3000`
+Without these, the Products page automatically falls back to built-in mock products so the UI
+still works in development. See [SHOPIFY_SETUP.md](SHOPIFY_SETUP.md) for how to get the token.
 
-### Available Scripts
+## Scripts
 
-- `npm start` - Start the development server
-- `npm run build` - Build the project for production
-- `npm run dev` - Start development server and open in browser
+| Command | Description |
+|---|---|
+| `npm start` | Dev server with hot reload |
+| `npm run dev` | Dev server, opens the browser |
+| `npm run build` | Production build to `dist/` |
 
-## Project Structure
+## Project structure
 
 ```
-trackcovers/
-├── public/
-│   └── index.html          # HTML template
-├── src/
-│   ├── App.js              # Main React component
-│   ├── App.css             # Styles
-│   └── index.js            # Entry point
-├── package.json            # Dependencies and scripts
-├── webpack.config.js       # Webpack configuration
-└── README.md              # This file
+public/             Static assets + index.html template (copied into dist/)
+src/
+  index.js          Entry point
+  App.js            Router (currently in Coming Soon mode)
+  ComingSoon.js     Active pre-order landing page
+  HomePage.js       Storefront home/hero (inactive benchmark)
+  Header.js         Shared header (nav, search, cart) — edit nav here, once
+  Footer.js         Shared footer
+  ProductsPage.js   Catalog, Make/Model + text search, product modal
+  CartPage.js       Cart and checkout
+  AboutPage.js
+  FAQPage.js
+  TrackCoversPage.js
+  CartContext.js    Cart state (localStorage-backed)
+  shopifyConfig.js  Shopify queries, request helper, checkout
+  equipmentData.js  Make/Model lists + track-size fitment data
+  ErrorBoundary.js
+webpack.config.js   Build config
 ```
 
-## Technologies Used
+Routes: `/` · `/products` · `/cart` · `/about` · `/faq` · `/track-covers`
 
-- **React 18** - UI library
-- **Webpack 5** - Module bundler
-- **Babel** - JavaScript compiler
-- **CSS3** - Styling with modern features
-- **HTML5** - Markup
+## Adding equipment to the search
 
-## Development
+The Make/Model dropdowns and the model → track-size mapping live in
+[src/equipmentData.js](src/equipmentData.js). Add a make to `MAKES`, its models to
+`MODELS_BY_MAKE`, and map models to track sizes in `TRACK_SIZE_TO_MODELS`.
 
-The project uses Webpack Dev Server for hot module replacement, so changes to your code will automatically refresh the browser.
+## Deployment
 
-## Building for Production
-
-To create a production build:
-
-```bash
-npm run build
-```
-
-The built files will be in the `dist/` directory.
+Builds to `dist/` and deploys as a single-page app on **Vercel** ([vercel.json](vercel.json)) or
+**Netlify** ([netlify.toml](netlify.toml)). Set the `REACT_APP_SHOPIFY_*` environment variables in
+the host's dashboard — they are baked into the bundle at build time. See
+[DEPLOYMENT.md](DEPLOYMENT.md) for troubleshooting.
 
 ## License
 
