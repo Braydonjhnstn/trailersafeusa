@@ -209,7 +209,7 @@ function ComingSoon() {
                 <option value="10+">10+</option>
               </select>
 
-              <textarea name="message" placeholder="Additional Message" aria-label="Additional Message" rows="3" />
+              <textarea name="message" placeholder="Additional Message" aria-label="Additional Message" rows="2" />
 
               <button type="submit" className="cs-btn cs-btn-primary cs-btn-submit">
                 <SendIcon />
