@@ -56,13 +56,6 @@ const PinIcon = () => (
     <circle cx="12" cy="10" r="2.5" stroke="currentColor" strokeWidth="2"/>
   </svg>
 );
-/* Idaho state silhouette: narrow northern panhandle, straight western border,
-   the Bitterroot/Montana diagonal on the northeast, and the wide flat south. */
-const IdahoOutline = () => (
-  <svg viewBox="20 0 100 130" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="cs-idaho">
-    <path d="M40 6 L58 6 L62 52 L104 98 L104 122 L40 122 Z" stroke="currentColor" strokeWidth="3" strokeLinejoin="round"/>
-  </svg>
-);
 const FacebookIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path d="M14 8.5h2.2V5.2c-.4 0-1.6-.2-3-.2-3 0-5 1.8-5 5.1V13H5.3v3.6H8.2V24h3.6v-7.4h2.8l.4-3.6h-3.2v-2.5c0-1 .3-1.8 1.9-1.8Z"/>
@@ -294,7 +287,7 @@ function ComingSoon() {
           <div className="cs-footer-hq">
             <div className="cs-hq-head"><PinIcon /> <span>HEADQUARTERED IN<br /><strong>EMMETT, IDAHO</strong></span></div>
             <p>Proudly designed and supported in the USA.</p>
-            <IdahoOutline />
+            <img src="/idaho.svg" alt="Idaho" className="cs-idaho" />
           </div>
         </div>
 

@@ -275,7 +275,7 @@ body { background: var(--cs-bg); }
 .cs-hq-head span { font-family: var(--cs-heading-font); text-transform: uppercase; font-size: 0.9rem; line-height: 1.2; letter-spacing: 0.03em; }
 .cs-hq-head strong { color: var(--cs-orange); font-size: 1.02rem; }
 .cs-footer-hq > p { color: var(--cs-muted); font-size: 0.8rem; margin-top: 0.5rem; max-width: 12rem; }
-.cs-idaho { position: absolute; top: -4px; right: 0; width: 48px; height: 60px; color: var(--cs-orange); opacity: 0.85; }
+.cs-idaho { position: absolute; top: -2px; right: 0; width: 52px; height: auto; display: block; }
 
 .cs-footer-bottom {
   display: flex;
