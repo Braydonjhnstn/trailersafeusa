@@ -250,10 +250,20 @@ body { background: var(--cs-bg); }
 }
 .cs-footer-brand .cs-logo { height: 36px; margin-bottom: 0.7rem; }
 .cs-footer-brand p { color: var(--cs-muted); font-size: 0.85rem; line-height: 1.45; margin-bottom: 0.7rem; max-width: 17rem; }
-.cs-socials { display: flex; gap: 0.7rem; }
-.cs-socials a { color: var(--cs-orange); display: inline-flex; }
-.cs-socials a:hover { color: var(--cs-orange-hover); }
-.cs-socials svg { width: 21px; height: 21px; }
+.cs-socials { display: flex; gap: 0.6rem; }
+.cs-socials a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  background: var(--cs-orange); /* ochre box ... */
+  color: var(--cs-bg);          /* ... with a dark (graphite) glyph inside */
+  transition: background 0.15s ease;
+}
+.cs-socials a:hover { background: var(--cs-orange-hover); }
+.cs-socials svg { width: 17px; height: 17px; }
 
 .cs-footer-col h4 { font-family: var(--cs-heading-font); text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.04em; margin-bottom: 0.6rem; }
 .cs-footer-col a { display: block; color: var(--cs-muted); font-size: 0.86rem; padding: 0.22rem 0; }

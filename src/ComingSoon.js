@@ -56,10 +56,11 @@ const PinIcon = () => (
     <circle cx="12" cy="10" r="2.5" stroke="currentColor" strokeWidth="2"/>
   </svg>
 );
-/* Approximate Idaho silhouette — decorative placeholder until the real asset arrives. */
+/* Idaho state silhouette: narrow northern panhandle, straight western border,
+   the Bitterroot/Montana diagonal on the northeast, and the wide flat south. */
 const IdahoOutline = () => (
-  <svg viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="cs-idaho">
-    <path d="M30 4h12l1 22 26 1 6 8-2 60H14l1-34-9-9 4-26h19z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
+  <svg viewBox="20 0 100 130" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="cs-idaho">
+    <path d="M40 6 L58 6 L62 52 L104 98 L104 122 L40 122 Z" stroke="currentColor" strokeWidth="3" strokeLinejoin="round"/>
   </svg>
 );
 const FacebookIcon = () => (
