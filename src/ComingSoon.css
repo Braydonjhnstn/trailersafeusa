@@ -31,7 +31,12 @@ body { background: var(--cs-bg); }
 .cs-page {
   background: var(--cs-bg);
   color: var(--cs-text);
-  min-height: 100vh;
+  /* Desktop: lock the whole page to the viewport — no page scroll (matches the
+     mockup). The flex column anchors the footer to the bottom; the form panel
+     scrolls internally only if a very short screen can't fit it. Reset to a
+     normal scrolling document on mobile (see the max-width: 980px block). */
+  height: 100vh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -96,7 +101,7 @@ body { background: var(--cs-bg); }
   text-transform: uppercase;
   line-height: 0.92;
   letter-spacing: 0.01em;
-  font-size: clamp(2.6rem, 5vw, 4.6rem);
+  font-size: clamp(2.4rem, 4.4vw, 4.1rem);
   color: var(--cs-text);
   margin: 0;
 }
@@ -146,6 +151,8 @@ body { background: var(--cs-bg); }
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-height: 0;
+  overflow-y: auto;
 }
 .cs-form-title {
   font-family: var(--cs-heading-font);
@@ -169,7 +176,7 @@ body { background: var(--cs-bg); }
   background: var(--cs-input);
   border: 1px solid var(--cs-line);
   border-radius: 5px;
-  padding: 0.62rem 0.9rem;
+  padding: 0.55rem 0.9rem;
   color: var(--cs-text);
   font-size: 0.9rem;
   font-family: inherit;
@@ -273,7 +280,8 @@ body { background: var(--cs-bg); }
 
 /* ---- Responsive ---- */
 @media (max-width: 980px) {
-  .cs-page { display: block; }
+  .cs-page { display: block; height: auto; overflow: visible; }
+  .cs-form-panel { overflow-y: visible; }
   .cs-main { grid-template-columns: 1fr; }
   .cs-hero { min-height: 380px; padding: 3rem 2rem; }
   .cs-features { grid-template-columns: repeat(2, 1fr); padding: 1.5rem 2rem; }
